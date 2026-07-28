@@ -31,7 +31,7 @@ function useMaterials() {
     const steel = new THREE.MeshStandardMaterial({
       color: new THREE.Color(STEEL),
       metalness: 1,
-      roughness: 0.18,
+      roughness: 0.16,
     });
     const steelMid = new THREE.MeshStandardMaterial({
       color: new THREE.Color(STEEL_MID),
@@ -42,7 +42,7 @@ function useMaterials() {
   }, []);
 }
 
-/* A slowly spinning gear -------------------------------------------------- */
+/* Spinning gear ----------------------------------------------------------- */
 function Gear({
   geometry,
   material,
@@ -70,21 +70,69 @@ function Gear({
       position={position}
       rotation={tilt}
       scale={scale}
-      castShadow
-      receiveShadow
     />
   );
 }
 
-/* The whole part cluster; gently parallaxes toward the pointer ------------ */
-function Parts({ pointer }: { pointer: React.MutableRefObject<{ x: number; y: number }> }) {
+/* Scissors — the hero centerpiece. Two crossed arms + finger rings + pivot.
+   Sways gently rather than spinning (a spinning scissor reads oddly). */
+function Scissors({
+  steel,
+  navy,
+  position = [0, 0, 0],
+  scale = 1,
+}: {
+  steel: THREE.Material;
+  navy: THREE.Material;
+  position?: [number, number, number];
+  scale?: number;
+}) {
+  const group = useRef<THREE.Group>(null);
+  useFrame((state) => {
+    if (!group.current) return;
+    const t = state.clock.elapsedTime;
+    group.current.rotation.z = Math.sin(t * 0.5) * 0.12;
+    group.current.rotation.y = Math.sin(t * 0.35) * 0.25;
+  });
+
+  const Arm = ({ side }: { side: 1 | -1 }) => (
+    <group rotation={[0, 0, side * 0.2]}>
+      {/* full arm bar (handle → blade) */}
+      <mesh position={[0, 0.35, 0]} material={steel}>
+        <boxGeometry args={[0.14, 2.7, 0.05]} />
+      </mesh>
+      {/* blade tip */}
+      <mesh position={[0, 1.78, 0]} material={steel}>
+        <coneGeometry args={[0.1, 0.5, 10]} />
+      </mesh>
+      {/* finger ring */}
+      <mesh position={[0, -1.18, 0]} material={navy}>
+        <torusGeometry args={[0.3, 0.06, 16, 40]} />
+      </mesh>
+    </group>
+  );
+
+  return (
+    <group ref={group} position={position} scale={scale}>
+      <Arm side={1} />
+      <Arm side={-1} />
+      {/* pivot screw (axis along z) */}
+      <mesh material={steel} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.1, 0.1, 0.18, 20]} />
+      </mesh>
+    </group>
+  );
+}
+
+/* Cluster — parallaxes toward the pointer -------------------------------- */
+function Parts({
+  pointer,
+}: {
+  pointer: React.MutableRefObject<{ x: number; y: number }>;
+}) {
   const group = useRef<THREE.Group>(null);
   const mats = useMaterials();
 
-  const gearBig = useMemo(
-    () => makeGearGeometry({ teeth: 16, tipRadius: 1.28, holeRadius: 0.36, thickness: 0.4 }),
-    []
-  );
   const gearMed = useMemo(
     () => makeGearGeometry({ teeth: 12, tipRadius: 1.22, holeRadius: 0.32, thickness: 0.32 }),
     []
@@ -99,56 +147,46 @@ function Parts({ pointer }: { pointer: React.MutableRefObject<{ x: number; y: nu
   useFrame((state) => {
     if (!group.current) return;
     const { x, y } = pointer.current;
-    // ease group rotation toward pointer for parallax depth
-    group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, x * 0.35, 0.05);
-    group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, -y * 0.28, 0.05);
-    // subtle breathing
+    group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, x * 0.3, 0.05);
+    group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, -y * 0.24, 0.05);
     const t = state.clock.elapsedTime;
-    group.current.position.y = Math.sin(t * 0.4) * 0.08;
+    group.current.position.y = Math.sin(t * 0.4) * 0.07;
   });
 
   return (
-    <group ref={group}>
-      {/* hero gear cluster, center-right */}
-      <Float speed={1.1} rotationIntensity={0.15} floatIntensity={0.5}>
-        <Gear
-          geometry={gearBig}
-          material={mats.navy}
-          position={[1.4, 0.2, 0]}
-          scale={1.5}
-          rotationSpeed={0.18}
-          tilt={[0.35, 0.15, 0]}
-        />
+    <group ref={group} scale={0.92}>
+      {/* CENTREPIECE — scissors */}
+      <Float speed={1.2} rotationIntensity={0.12} floatIntensity={0.5}>
+        <Scissors steel={mats.steel} navy={mats.navy} position={[1.7, 0.1, 0.2]} scale={1.05} />
       </Float>
 
-      <Float speed={1.4} rotationIntensity={0.2} floatIntensity={0.7}>
+      {/* smaller supporting gears */}
+      <Float speed={1.3} rotationIntensity={0.2} floatIntensity={0.7}>
         <Gear
           geometry={gearMed}
-          material={mats.steel}
-          position={[3.1, 1.35, -0.6]}
-          scale={0.85}
-          rotationSpeed={-0.34}
+          material={mats.navy}
+          position={[3.3, 1.5, -0.8]}
+          scale={0.62}
+          rotationSpeed={-0.3}
           tilt={[0.4, -0.2, 0]}
         />
       </Float>
-
-      <Float speed={1.7} rotationIntensity={0.25} floatIntensity={0.9}>
+      <Float speed={1.6} rotationIntensity={0.25} floatIntensity={0.9}>
         <Gear
           geometry={gearSmall}
           material={mats.steelMid}
-          position={[0.2, -1.7, 0.9]}
-          scale={0.7}
+          position={[0.1, -1.8, 0.9]}
+          scale={0.5}
           rotationSpeed={0.5}
           tilt={[0.5, 0.3, 0]}
         />
       </Float>
-
-      <Float speed={1.2} rotationIntensity={0.3} floatIntensity={0.8}>
+      <Float speed={1.1} rotationIntensity={0.3} floatIntensity={0.8}>
         <Gear
           geometry={gearMed}
           material={mats.navyDeep}
-          position={[-2.3, -0.6, -1.2]}
-          scale={0.6}
+          position={[-2.4, -0.7, -1.2]}
+          scale={0.44}
           rotationSpeed={-0.22}
           tilt={[0.3, 0.2, 0]}
         />
@@ -159,17 +197,18 @@ function Parts({ pointer }: { pointer: React.MutableRefObject<{ x: number; y: nu
         <mesh
           geometry={needle}
           material={mats.steel}
-          position={[-1.5, 1.5, 0.4]}
+          position={[-1.7, 1.6, 0.4]}
           rotation={[0, 0, Math.PI * 0.28]}
+          scale={0.8}
         />
       </Float>
       <Float speed={1.6} rotationIntensity={0.5} floatIntensity={1}>
         <mesh
           geometry={needle}
           material={mats.steelMid}
-          position={[2.4, -1.3, 0.6]}
+          position={[2.7, -1.5, 0.5]}
           rotation={[0, 0, -Math.PI * 0.4]}
-          scale={0.8}
+          scale={0.62}
         />
       </Float>
 
@@ -178,25 +217,25 @@ function Parts({ pointer }: { pointer: React.MutableRefObject<{ x: number; y: nu
         <mesh
           geometry={bobbin}
           material={mats.navy}
-          position={[-2.9, 1.4, 0.2]}
+          position={[-3, 1.5, 0.1]}
           rotation={[Math.PI * 0.5, 0, 0.3]}
-          scale={0.9}
+          scale={0.7}
         />
       </Float>
       <Float speed={1.9} rotationIntensity={0.3} floatIntensity={1}>
         <mesh
           geometry={bobbin}
           material={mats.steel}
-          position={[1.9, 2, -0.4]}
+          position={[2.1, 2.1, -0.4]}
           rotation={[Math.PI * 0.42, 0.2, 0]}
-          scale={0.55}
+          scale={0.42}
         />
       </Float>
     </group>
   );
 }
 
-/* Procedural studio lighting — built from Lightformers, no HDR files ------ */
+/* Procedural studio lighting — no HDR files ------------------------------- */
 function Rig() {
   return (
     <>
@@ -204,28 +243,10 @@ function Rig() {
       <directionalLight position={[5, 6, 4]} intensity={2.2} color="#dfe8ef" />
       <directionalLight position={[-6, -2, 2]} intensity={0.8} color="#3a6a8a" />
       <Environment resolution={256}>
-        <group rotation={[0, 0, 0]}>
-          <Lightformer
-            form="rect"
-            intensity={3}
-            position={[3, 4, 4]}
-            scale={[6, 6, 1]}
-            color="#eaf1f6"
-          />
-          <Lightformer
-            form="rect"
-            intensity={1.4}
-            position={[-4, 1, 3]}
-            scale={[5, 5, 1]}
-            color="#6f8fa3"
-          />
-          <Lightformer
-            form="circle"
-            intensity={2}
-            position={[0, -4, 3]}
-            scale={[4, 4, 1]}
-            color="#17476b"
-          />
+        <group>
+          <Lightformer form="rect" intensity={3} position={[3, 4, 4]} scale={[6, 6, 1]} color="#eaf1f6" />
+          <Lightformer form="rect" intensity={1.4} position={[-4, 1, 3]} scale={[5, 5, 1]} color="#6f8fa3" />
+          <Lightformer form="circle" intensity={2} position={[0, -4, 3]} scale={[4, 4, 1]} color="#17476b" />
         </group>
       </Environment>
     </>

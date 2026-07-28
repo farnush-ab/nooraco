@@ -5,14 +5,14 @@ import Magnetic from "./ui/Magnetic";
 
 export default function Contact() {
   return (
-    <section id="contact" className="relative overflow-hidden py-16 sm:py-24">
-      <div className="mx-auto max-w-[1200px] container-x">
+    <section id="contact" className="relative overflow-hidden py-12 sm:py-20">
+      <div className="mx-auto max-w-[1180px] container-x">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9 }}
-          className="relative overflow-hidden rounded-3xl bg-ink-900 text-ink-100 p-8 sm:p-12 lg:p-16"
+          className="relative overflow-hidden rounded-3xl bg-ink-900 text-ink-100 p-6 sm:p-10 lg:p-12"
         >
           <div className="blob -right-10 -top-10 h-72 w-72 bg-ink-800/40" />
           <div className="blob -bottom-16 -left-10 h-96 w-96 bg-ink-800/60" />
@@ -35,8 +35,8 @@ export default function Contact() {
                   let's talk
                 </span>
               </div>
-              <h2 className="display mt-4 text-[8vw] leading-[0.95] sm:text-[5vw] lg:text-[4vw]">
-                با ما <span className="italic-serif italic text-ink-500">صحبت</span> کنید
+              <h2 className="display mt-4 text-[7vw] leading-[0.98] sm:text-[4vw] lg:text-[3vw]">
+                با ما <span className="italic-serif italic text-ink-300">صحبت</span> کنید
               </h2>
               <p className="mt-6 max-w-xl text-sm leading-8 text-ink-100/75 sm:text-base">
                 دنبال قطعه‌ی خاصی هستید یا سؤال فنی دارید؟ همکاران ما آماده‌ی

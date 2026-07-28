@@ -15,26 +15,27 @@ export default function Craft() {
     target: ref,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], [40, -80]);
+  const y = useTransform(scrollYProgress, [0, 1], [20, -30]);
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 60]);
 
   return (
-    <section id="craft" className="relative overflow-hidden py-16 sm:py-24">
-      <div className="mx-auto max-w-[1200px] container-x">
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-          {/* left copy */}
-          <div className="lg:col-span-7">
+    <section id="craft" className="relative overflow-hidden py-12 sm:py-20">
+      <div className="mx-auto max-w-[1180px] container-x">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          {/* left copy — min-w-0 stops the wide marquee below from forcing
+              this grid column past the viewport width (RTL overflow). */}
+          <div className="min-w-0 lg:col-span-7">
             <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest2 text-ink-900/60">
               <span>۰۶ · craft</span>
               <span className="h-px w-8 bg-line" />
               <span className="serif italic normal-case text-sm text-ink-900/60">since 2014</span>
             </div>
-            <h2 className="display mt-4 text-3xl leading-[1] text-ink-900 sm:text-4xl lg:text-5xl">
+            <h2 className="display mt-4 text-2xl leading-[1] text-ink-900 sm:text-3xl lg:text-4xl">
               فلسفه‌ی <span className="italic-serif italic text-ink-800">نوراکو</span>
             </h2>
 
-            <div className="mt-10 space-y-6">
-              <p className="serif text-lg leading-[1.4] text-ink-900 sm:text-xl lg:text-2xl">
+            <div className="mt-8 space-y-5">
+              <p className="serif text-base leading-[1.5] text-ink-900 sm:text-lg lg:text-xl">
                 هر سوزن یک گامِ کوچک است در ماشینی که کل صنعتی را حرکت می‌دهد.
                 نوراکو زاده‌ی همین باور است.
               </p>
@@ -77,7 +78,7 @@ export default function Craft() {
           <div ref={ref} className="relative lg:col-span-5">
             <motion.div
               style={{ y }}
-              className="relative mx-auto aspect-square w-full max-w-md"
+              className="relative mx-auto aspect-square w-full max-w-[260px] sm:max-w-sm lg:max-w-md"
             >
               <div
                 aria-hidden

@@ -27,8 +27,8 @@ const posts = [
 
 export default function Journal() {
   return (
-    <section id="journal" className="relative py-16 sm:py-24">
-      <div className="mx-auto max-w-[1200px] container-x">
+    <section id="journal" className="relative py-12 sm:py-20">
+      <div className="mx-auto max-w-[1180px] container-x">
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest2 text-ink-900/60">
@@ -36,7 +36,7 @@ export default function Journal() {
               <span className="h-px w-8 bg-line" />
               <span className="serif italic normal-case text-sm text-ink-900/60">notes & essays</span>
             </div>
-            <h2 className="display mt-4 text-3xl leading-[1] text-ink-900 sm:text-4xl lg:text-5xl">
+            <h2 className="display mt-4 text-2xl leading-[1] text-ink-900 sm:text-3xl lg:text-4xl">
               مجله‌ی <span className="italic-serif italic text-ink-800">نوراکو</span>
             </h2>
           </div>
