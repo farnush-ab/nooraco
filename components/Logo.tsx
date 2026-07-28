@@ -1,5 +1,11 @@
 "use client";
 
+/**
+ * Brand logo — the circular Noora badge (navy disc with white machine +
+ * wordmark). Served from /public/logo.png with transparent corners, so it
+ * drops cleanly onto both the light sections and the dark hero/footer.
+ * The `light` prop is kept for API compatibility with existing callers.
+ */
 export default function Logo({
   className = "",
   light = false,
@@ -9,24 +15,25 @@ export default function Logo({
   light?: boolean;
   large?: boolean;
 }) {
-  const fill = light ? "#ebebee" : "#102b42";
-  const size = large ? "h-8 w-8" : "h-5 w-5";
-  const text = large ? "text-lg" : "text-xs";
+  const size = large ? "h-14 w-14" : "h-10 w-10";
+  // On dark backgrounds (light=true) the navy disc can blend in, so lift it
+  // with a faint ring + soft glow. On light sections it needs nothing.
+  const onDark = light
+    ? "rounded-full ring-1 ring-ink-100/20 shadow-[0_0_0_3px_rgba(174,188,197,0.06)]"
+    : "";
   return (
-    <a href="#top" className={`flex items-center gap-2.5 ${className}`} aria-label="Nooraco">
-      <svg viewBox="0 0 64 64" className={size} aria-hidden>
-        <g fill={fill}>
-          <rect x="14" y="6" width="3" height="6" rx="1" />
-          <rect x="47" y="6" width="3" height="6" rx="1" />
-          <path d="M10 14 H54 V20 H44 C44 28 38 32 30 32 V40 C30 46 26 52 18 52 H10 Z" />
-        </g>
-      </svg>
-      <span
-        className={`${text} uppercase tracking-[0.32em]`}
-        style={{ color: fill, fontWeight: 500 }}
-      >
-        nooraco
-      </span>
+    <a
+      href="#top"
+      className={`inline-flex items-center ${className}`}
+      aria-label="نوراکو · Nooraco"
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/logo.png"
+        alt="نوراکو"
+        className={`${size} select-none object-contain ${onDark}`}
+        draggable={false}
+      />
     </a>
   );
 }
