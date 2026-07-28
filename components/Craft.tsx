@@ -20,7 +20,7 @@ export default function Craft() {
 
   return (
     <section id="craft" className="relative overflow-hidden py-16 sm:py-24">
-      <div className="mx-auto max-w-[1240px] container-x">
+      <div className="mx-auto max-w-[1200px] container-x">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           {/* left copy */}
           <div className="lg:col-span-7">

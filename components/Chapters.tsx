@@ -76,7 +76,7 @@ function ChapterArt({ kind }: { kind: string }) {
 export default function Chapters() {
   return (
     <section id="chapters" className="relative py-16 sm:py-24">
-      <div className="mx-auto max-w-[1240px] container-x">
+      <div className="mx-auto max-w-[1200px] container-x">
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest2 text-ink-900/60">

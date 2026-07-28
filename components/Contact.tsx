@@ -5,7 +5,7 @@ import { ArrowUpLeft, Instagram, MessageCircle, Phone } from "lucide-react";
 export default function Contact() {
   return (
     <section id="contact" className="relative overflow-hidden py-16 sm:py-24">
-      <div className="mx-auto max-w-[1240px] container-x">
+      <div className="mx-auto max-w-[1200px] container-x">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

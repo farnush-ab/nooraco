@@ -1,227 +1,158 @@
 "use client";
-import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpLeft } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-  const sx = useSpring(mx, { stiffness: 60, damping: 20 });
-  const sy = useSpring(my, { stiffness: 60, damping: 20 });
-
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, -120]);
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, -60]);
   const heroFade = useTransform(scrollYProgress, [0, 0.9], [1, 0]);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const onMove = (e: MouseEvent) => {
-      const r = el.getBoundingClientRect();
-      mx.set((e.clientX - r.left) / r.width);
-      my.set((e.clientY - r.top) / r.height);
-    };
-    el.addEventListener("mousemove", onMove);
-    return () => el.removeEventListener("mousemove", onMove);
-  }, [mx, my]);
-
-  const rotY = useTransform(sx, (v) => (v - 0.5) * 24);
-  const rotX = useTransform(sy, (v) => (v - 0.5) * -14);
-  const trX = useTransform(sx, (v) => (v - 0.5) * -30);
-  const trY = useTransform(sy, (v) => (v - 0.5) * -30);
-  const blobX = useTransform(sx, (v) => (v - 0.5) * 60);
-  const blobY = useTransform(sy, (v) => (v - 0.5) * 60);
+  const artY = useTransform(scrollYProgress, [0, 1], [0, 80]);
 
   return (
     <section
       ref={ref}
-      className="relative isolate flex min-h-[92svh] flex-col justify-between overflow-hidden pt-24 pb-10 sm:pt-28"
+      className="relative isolate flex min-h-[92svh] flex-col justify-between overflow-hidden pt-28 pb-8 sm:pt-32 sm:pb-12"
     >
-      {/* ambient blobs */}
-      <motion.div
-        style={{ x: blobX, y: blobY }}
-        className="blob left-[-10%] top-[10%] h-[380px] w-[380px] bg-ink-900/25 sm:h-[520px] sm:w-[520px]"
-      />
-      <motion.div
-        style={{ x: blobY, y: blobX }}
-        className="blob right-[-10%] bottom-[10%] h-[320px] w-[320px] bg-ink-500/50 sm:h-[480px] sm:w-[480px]"
-      />
-
-      {/* subtle grid */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.09]"
-        style={{
-          backgroundImage:
-            "linear-gradient(#102b42 1px, transparent 1px), linear-gradient(90deg, #102b42 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
-          maskImage:
-            "radial-gradient(ellipse at center, black 20%, transparent 75%)",
-        }}
-      />
+      {/* subtle ambient blob (brand navy only) */}
+      <div className="blob left-[-15%] top-[15%] h-[420px] w-[420px] bg-ink-800/12" />
+      <div className="blob right-[-10%] bottom-[10%] h-[460px] w-[460px] bg-ink-500/18" />
 
       <motion.div
-        style={{ y: heroY, scale: heroScale, opacity: heroFade }}
-        className="relative mx-auto flex w-full max-w-[1240px] flex-1 flex-col justify-between container-x"
+        style={{ y: heroY, opacity: heroFade }}
+        className="relative mx-auto flex w-full max-w-[1200px] flex-1 flex-col container-x"
       >
-        {/* Top meta row */}
+        {/* top meta strip */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9 }}
-          className="flex items-baseline justify-between gap-4 text-[10px] uppercase tracking-widest2 text-ink-900/60"
+          transition={{ duration: 0.8 }}
+          className="flex items-baseline justify-between text-[10px] uppercase tracking-widest2 text-ink-900/55"
         >
-          <span>Est. 2014 · Tehran, IR</span>
-          <span className="hidden sm:block">فصل ۰۱ / ۲۰۲۶</span>
-          <span className="serif italic text-sm text-ink-900/80">
-            no. 001
-          </span>
+          <span>Est. 1393 · Tehran</span>
+          <span className="hidden sm:inline">issue 01 · ۲۰۲۶</span>
+          <span className="serif italic normal-case text-sm text-ink-900/75">no. 001</span>
         </motion.div>
 
-        {/* Big editorial headline */}
-        <div className="mt-10 flex flex-1 flex-col justify-center sm:mt-14">
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="text-ink-900"
-          >
-            <span className="block serif italic text-[8vw] leading-[0.95] text-ink-900/80 sm:text-[5vw] lg:text-[4vw]">
-              the art of
-            </span>
-            <span
-              className="display block text-[13vw] leading-[0.92] sm:text-[10vw] lg:text-[8vw]"
-              style={{ fontWeight: 300 }}
+        {/* main content — asymmetric editorial */}
+        <div className="mt-auto grid flex-1 gap-10 pt-16 sm:pt-20 lg:grid-cols-12 lg:items-end lg:gap-16">
+          {/* text column */}
+          <div className="lg:col-span-7 lg:pb-8">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.15 }}
+              className="flex items-center gap-3"
             >
-              {"نوراکو".split("").map((c, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ y: 80, opacity: 0, filter: "blur(12px)" }}
-                  animate={{ y: 0, opacity: 1, filter: "blur(0)" }}
-                  transition={{
-                    delay: 0.25 + i * 0.08,
-                    duration: 1.1,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                  className="inline-block"
-                >
-                  {c}
-                </motion.span>
-              ))}
-            </span>
-            <span className="mt-1 flex flex-wrap items-end gap-4 text-[10px] uppercase tracking-widest2 text-ink-900/60 sm:mt-3 sm:text-[11px]">
-              <span>industrial sewing parts</span>
-              <span className="hidden h-3 w-px bg-ink-900/30 sm:inline-block" />
-              <span className="serif italic normal-case text-base tracking-normal text-ink-900/70 sm:text-lg">
-                — کیفیت. دقت. اصالت.
-              </span>
-            </span>
-          </motion.h1>
-        </div>
+              <span className="block h-px w-7 bg-ink-900/40" />
+              <span className="kicker">industrial sewing parts</span>
+            </motion.div>
 
-        {/* Bottom row: copy + CTAs + machine */}
-        <div className="mt-10 grid gap-8 sm:mt-14 lg:grid-cols-12 lg:items-end">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.9 }}
-            className="lg:col-span-6"
-          >
-            <p className="max-w-md text-sm leading-7 text-ink-900/80 sm:text-base sm:leading-8">
-              از سوزن تا موتور — نوراکو مرجع تخصصی قطعات چرخ‌های خیاطی صنعتی
-              در ایران است. همراهِ کارگاه‌های حرفه‌ای، از ۱۳۹۳.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <MagneticButton href="#bento">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="display mt-6 text-[9vw] leading-[1.02] text-ink-900 sm:text-[6vw] lg:text-[4.4vw]"
+            >
+              قطعاتی که کارگاهِ شما را{" "}
+              <span className="italic-serif italic text-ink-800">زنده</span>{" "}
+              نگه می‌دارند.
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.5 }}
+              className="mt-8 max-w-md text-sm leading-8 text-ink-900/75 sm:text-base"
+            >
+              نوراکو، مرجع تخصصی قطعات چرخ‌های خیاطی صنعتی در ایران —
+              همراهِ کارگاه‌های حرفه‌ای از سال ۱۳۹۳.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.65 }}
+              className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3"
+            >
+              <a
+                href="#bento"
+                className="group inline-flex items-center gap-3 rounded-full bg-ink-900 px-6 py-3 text-sm text-ink-100 transition-colors hover:bg-ink-800"
+              >
                 <span>کاوش در مجموعه</span>
-                <ArrowUpLeft className="h-4 w-4" />
-              </MagneticButton>
+                <ArrowUpLeft className="h-4 w-4 transition-transform group-hover:-rotate-45" />
+              </a>
               <a
                 href="#craft"
                 className="hover-line text-[11px] uppercase tracking-widest2 text-ink-900/70"
               >
                 داستان برند
               </a>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
 
-          {/* 3D perspective machine */}
+          {/* right art column */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            style={{ y: artY }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 1 }}
-            className="relative lg:col-span-6"
+            transition={{ duration: 1, delay: 0.4 }}
+            className="relative lg:col-span-5"
           >
-            <div className="perspective mx-auto max-w-sm">
-              <motion.div
-                style={{
-                  rotateY: rotY,
-                  rotateX: rotX,
-                  x: trX,
-                  y: trY,
-                  transformStyle: "preserve-3d",
-                }}
-                className="relative aspect-[5/4] w-full"
-              >
-                {/* stacked plates */}
+            <figure className="relative">
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-3xl bg-ink-50/70">
                 <div
-                  className="absolute inset-0 rounded-3xl bg-ink-900/8"
-                  style={{ transform: "translateZ(-30px)" }}
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 opacity-[0.08]"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(#102b42 1px, transparent 1px), linear-gradient(90deg, #102b42 1px, transparent 1px)",
+                    backgroundSize: "32px 32px",
+                  }}
                 />
-                <div
-                  className="absolute inset-0 rounded-3xl bg-ink-50 shadow-[0_60px_120px_-40px_rgba(11,30,48,0.5)]"
-                  style={{ transform: "translateZ(0)" }}
-                />
-                {/* main SVG machine */}
-                <div
-                  className="relative h-full w-full"
-                  style={{ transform: "translateZ(60px)" }}
-                >
+                <div className="relative flex h-full w-full items-center justify-center p-8">
                   <MachineArt />
                 </div>
 
-                {/* floating chips */}
-                <motion.div
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -top-4 right-4 chip bg-ink-50/90 text-ink-900"
-                  style={{ transform: "translateZ(90px)" }}
-                >
-                  ● منتخب امروز — PIN
-                </motion.div>
-                <motion.div
-                  animate={{ y: [0, 8, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute bottom-4 left-4 chip bg-ink-900 text-ink-100 border-ink-900"
-                  style={{ transform: "translateZ(90px)" }}
-                >
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-ink-500" />
-                  دقت دوخت ۹۹٫۹٪
-                </motion.div>
-              </motion.div>
-            </div>
+                {/* corner caption */}
+                <div className="absolute right-5 top-5 text-right">
+                  <div className="kicker text-ink-900/50">figure 001</div>
+                  <div className="serif italic mt-1 text-sm text-ink-900/80">
+                    industrial machine
+                  </div>
+                </div>
+              </div>
+              <figcaption className="mt-4 flex items-baseline justify-between text-[10px] uppercase tracking-widest2 text-ink-900/50">
+                <span>plate 01 / 24</span>
+                <span className="serif italic normal-case text-xs text-ink-900/60">
+                  — from the noora archive
+                </span>
+              </figcaption>
+            </figure>
           </motion.div>
         </div>
 
-        {/* Bottom scroll indicator */}
+        {/* bottom meta row */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="mt-8 flex items-center justify-between border-t border-line pt-4 text-[10px] uppercase tracking-widest2 text-ink-900/55"
+          transition={{ delay: 1.1, duration: 0.7 }}
+          className="mt-14 flex items-center justify-between gap-6 border-t border-line pt-5 text-[10px] uppercase tracking-widest2 text-ink-900/50 sm:mt-16"
         >
           <span className="flex items-center gap-2">
             <span className="serif italic normal-case text-sm text-ink-900/70">scroll</span>
             <motion.span
-              animate={{ y: [0, 4, 0] }}
-              transition={{ duration: 1.6, repeat: Infinity }}
+              animate={{ y: [0, 3, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity }}
             >
               ↓
             </motion.span>
           </span>
-          <span className="hidden sm:inline">۶۰۰۰+ کد کالا · ۳۲ استان</span>
+          <span className="hidden sm:inline">۶۰۰۰+ کد کالا · ۳۲ استان تحت پوشش</span>
           <span>Nooraco Studio™</span>
         </motion.div>
       </motion.div>
@@ -229,137 +160,67 @@ export default function Hero() {
   );
 }
 
-function MagneticButton({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
-  const ref = useRef<HTMLAnchorElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 300, damping: 20 });
-  const sy = useSpring(y, { stiffness: 300, damping: 20 });
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const onMove = (e: MouseEvent) => {
-      const r = el.getBoundingClientRect();
-      x.set((e.clientX - (r.left + r.width / 2)) * 0.35);
-      y.set((e.clientY - (r.top + r.height / 2)) * 0.35);
-    };
-    const onLeave = () => {
-      x.set(0);
-      y.set(0);
-    };
-    el.addEventListener("mousemove", onMove);
-    el.addEventListener("mouseleave", onLeave);
-    return () => {
-      el.removeEventListener("mousemove", onMove);
-      el.removeEventListener("mouseleave", onLeave);
-    };
-  }, [x, y]);
-
-  return (
-    <motion.a
-      ref={ref}
-      href={href}
-      style={{ x: sx, y: sy }}
-      className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-ink-900 px-6 py-3 text-sm text-ink-100 transition-colors hover:bg-ink-800"
-    >
-      <span className="relative z-10 flex items-center gap-2">{children}</span>
-      <span
-        aria-hidden
-        className="absolute inset-0 -z-0 origin-left scale-x-0 rounded-full bg-ink-800 transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100"
-      />
-    </motion.a>
-  );
-}
-
 function MachineArt() {
   return (
-    <svg viewBox="0 0 500 400" className="h-full w-full">
+    <svg viewBox="0 0 400 500" className="h-full w-full">
       <defs>
         <linearGradient id="body" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stopColor="#102b42" />
-          <stop offset="0.5" stopColor="#17476b" />
-          <stop offset="1" stopColor="#0a1d31" />
-        </linearGradient>
-        <linearGradient id="metal" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stopColor="#6f8fa3" />
+          <stop offset="0" stopColor="#17476b" />
           <stop offset="1" stopColor="#102b42" />
         </linearGradient>
-        <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0" stopColor="#6f8fa3" stopOpacity="0.6" />
-          <stop offset="1" stopColor="#6f8fa3" stopOpacity="0" />
-        </radialGradient>
+        <linearGradient id="metal" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stopColor="#aebcc5" />
+          <stop offset="1" stopColor="#6f8fa3" />
+        </linearGradient>
       </defs>
-      {/* soft glow behind wheel */}
-      <circle cx="120" cy="240" r="80" fill="url(#glow)" />
+
+      {/* soft shadow */}
+      <ellipse cx="200" cy="440" rx="150" ry="10" fill="#102b42" opacity="0.08" />
 
       {/* base */}
-      <rect x="30" y="290" width="440" height="70" rx="10" fill="url(#body)" />
-      <rect x="30" y="285" width="440" height="6" rx="3" fill="#3a6a8a" opacity="0.35" />
+      <rect x="40" y="330" width="320" height="70" rx="10" fill="url(#body)" />
 
       {/* body */}
       <path
-        d="M60 290 V150 C60 115 90 100 130 100 H400 C425 100 440 118 440 148 V240 C440 260 425 275 400 275 H240 V290 Z"
+        d="M60 330 V180 C60 150 90 138 130 138 H320 C345 138 360 156 360 184 V270 C360 292 345 305 320 305 H200 V330 Z"
         fill="url(#body)"
       />
+
       {/* head */}
-      <rect x="395" y="120" width="42" height="160" rx="8" fill="#0a1d31" />
-      <rect x="395" y="120" width="42" height="8" rx="3" fill="#3a6a8a" opacity="0.4" />
+      <rect x="308" y="152" width="42" height="150" rx="8" fill="#102b42" />
 
       {/* spool pins */}
-      <g fill="#ebebee">
-        <rect x="120" y="70" width="3" height="40" rx="1.5" />
-        <rect x="360" y="70" width="3" height="40" rx="1.5" />
-        <ellipse cx="121.5" cy="70" rx="12" ry="4" fill="#6f8fa3" />
-        <ellipse cx="361.5" cy="70" rx="12" ry="4" fill="#6f8fa3" />
+      <g fill="#aebcc5">
+        <rect x="112" y="108" width="3" height="34" rx="1.5" />
+        <rect x="290" y="108" width="3" height="34" rx="1.5" />
+        <ellipse cx="113.5" cy="108" rx="10" ry="3.5" fill="#6f8fa3" />
+        <ellipse cx="291.5" cy="108" rx="10" ry="3.5" fill="#6f8fa3" />
       </g>
 
       {/* hand wheel */}
       <g>
-        <circle cx="120" cy="240" r="42" fill="#0a1d31" />
-        <circle cx="120" cy="240" r="28" fill="url(#metal)" />
-        <circle cx="120" cy="240" r="6" fill="#0a1d31" />
+        <circle cx="100" cy="240" r="34" fill="#102b42" />
+        <circle cx="100" cy="240" r="22" fill="url(#metal)" />
+        <circle cx="100" cy="240" r="5" fill="#102b42" />
       </g>
 
       {/* needle bar */}
-      <rect x="410" y="270" width="10" height="50" rx="3" fill="url(#metal)" />
+      <rect x="322" y="290" width="10" height="52" rx="3" fill="url(#metal)" />
 
       {/* fabric */}
-      <path
-        d="M40 355 Q250 320 460 355 L460 400 L40 400 Z"
-        fill="#ebebee"
-      />
+      <path d="M50 405 Q200 372 350 405 L350 445 L50 445 Z" fill="#ebebee" />
 
-      {/* stitch line */}
-      <motion.path
-        d="M60 370 H440"
+      {/* fine stitch line */}
+      <line
+        x1="60"
+        y1="425"
+        x2="340"
+        y2="425"
         stroke="#102b42"
-        strokeWidth="1.5"
-        strokeDasharray="4 6"
+        strokeWidth="1"
+        strokeDasharray="3 6"
         fill="none"
       />
-
-      {/* brand callout */}
-      <g>
-        <line x1="440" y1="140" x2="475" y2="105" stroke="#102b42" strokeWidth="0.8" />
-        <circle cx="440" cy="140" r="2.5" fill="#102b42" />
-        <text x="478" y="102" fill="#102b42" fontSize="9" letterSpacing="1.8" style={{ fontFamily: "var(--font-serif)" }}>
-          steel · precision
-        </text>
-      </g>
-      <g>
-        <line x1="120" y1="240" x2="70" y2="180" stroke="#102b42" strokeWidth="0.8" />
-        <circle cx="120" cy="240" r="2.5" fill="#102b42" />
-        <text x="20" y="176" fill="#102b42" fontSize="9" letterSpacing="1.8" style={{ fontFamily: "var(--font-serif)" }}>
-          hand wheel
-        </text>
-      </g>
     </svg>
   );
 }

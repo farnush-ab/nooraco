@@ -22,7 +22,7 @@ export default function Footer() {
             "radial-gradient(ellipse at top, black 20%, transparent 65%)",
         }}
       />
-      <div className="relative mx-auto max-w-[1240px] container-x">
+      <div className="relative mx-auto max-w-[1200px] container-x">
         <div className="grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <Logo light large />

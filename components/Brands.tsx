@@ -24,7 +24,7 @@ const brands = [
 export default function Brands() {
   return (
     <section id="brands" className="relative py-16 sm:py-24">
-      <div className="mx-auto max-w-[1240px] container-x">
+      <div className="mx-auto max-w-[1200px] container-x">
         <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest2 text-ink-900/60">
           <span>۰۵ · brands</span>
           <span className="h-px w-8 bg-line" />

@@ -33,7 +33,7 @@ export default function Navbar() {
             : "bg-transparent"
         }`}
       >
-        <nav className="mx-auto flex max-w-[1240px] items-center justify-between container-x py-4">
+        <nav className="mx-auto flex max-w-[1200px] items-center justify-between container-x py-4">
           <Logo />
 
           <ul className="hidden items-center gap-8 lg:flex">

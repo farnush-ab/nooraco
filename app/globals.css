@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Persian */
+/* Fallback: Vazirmatn via jsdelivr, keeps site legible if Google Fonts blocked */
 @font-face {
   font-family: "Vazirmatn";
   font-style: normal;
@@ -11,25 +11,10 @@
   src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn[wght].woff2") format("woff2-variations");
 }
 
-/* Latin editorial serif */
-@font-face {
-  font-family: "InstrumentSerif";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("https://cdn.jsdelivr.net/fontsource/fonts/instrument-serif@latest/latin-400-normal.woff2") format("woff2");
-}
-@font-face {
-  font-family: "InstrumentSerif";
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url("https://cdn.jsdelivr.net/fontsource/fonts/instrument-serif@latest/latin-400-italic.woff2") format("woff2");
-}
-
 :root {
-  --font-fa: "Vazirmatn", system-ui, sans-serif;
-  --font-serif: "InstrumentSerif", "Times New Roman", Georgia, serif;
+  /* Estedad from Google Fonts, Vazirmatn as fallback */
+  --font-fa: "Estedad", "Vazirmatn", system-ui, sans-serif;
+  --font-serif: "Instrument Serif", "Times New Roman", Georgia, serif;
   --bg: #ebebee;
   --ink: #102b42;
   --line: rgba(16, 43, 66, 0.10);
@@ -57,15 +42,14 @@ html { scroll-behavior: smooth; }
   border-radius: 999px;
 }
 
-/* Typography */
-.serif { font-family: var(--font-serif); font-weight: 400; letter-spacing: -0.01em; }
+.serif { font-family: var(--font-serif); font-weight: 400; letter-spacing: -0.005em; }
 .italic-serif { font-family: var(--font-serif); font-style: italic; font-weight: 400; }
 
 .display {
   font-family: var(--font-fa);
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  line-height: 0.98;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
 }
 
 .eyebrow {
@@ -86,13 +70,11 @@ html { scroll-behavior: smooth; }
 .text-balance { text-wrap: balance; }
 .text-pretty { text-wrap: pretty; }
 
-/* Marquee mask */
 .marquee-mask {
   mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
 }
 
-/* Hover underline */
 .hover-line { position: relative; display: inline-block; }
 .hover-line::after {
   content: "";
@@ -109,11 +91,9 @@ html { scroll-behavior: smooth; }
   transform: scaleX(0);
 }
 
-/* 3D perspective */
 .perspective { perspective: 1400px; perspective-origin: 50% 50%; }
 .preserve-3d { transform-style: preserve-3d; }
 
-/* Blob (ambient light) */
 .blob {
   position: absolute;
   border-radius: 9999px;
@@ -121,7 +101,6 @@ html { scroll-behavior: smooth; }
   pointer-events: none;
 }
 
-/* Chip */
 .chip {
   display: inline-flex;
   align-items: center;
@@ -136,15 +115,14 @@ html { scroll-behavior: smooth; }
   backdrop-filter: blur(8px);
 }
 
-/* Focus */
 :focus-visible {
   outline: 2px solid #17476b;
   outline-offset: 3px;
   border-radius: 6px;
 }
 
-/* Generous, mobile-safe container */
-.container-x { padding-left: 24px; padding-right: 24px; }
-@media (min-width: 640px) { .container-x { padding-left: 56px; padding-right: 56px; } }
-@media (min-width: 1024px) { .container-x { padding-left: 96px; padding-right: 96px; } }
-@media (min-width: 1440px) { .container-x { padding-left: 140px; padding-right: 140px; } }
+/* Bigger margins */
+.container-x { padding-left: 28px; padding-right: 28px; }
+@media (min-width: 640px)  { .container-x { padding-left: 72px;  padding-right: 72px;  } }
+@media (min-width: 1024px) { .container-x { padding-left: 128px; padding-right: 128px; } }
+@media (min-width: 1440px) { .container-x { padding-left: 180px; padding-right: 180px; } }

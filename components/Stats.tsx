@@ -30,7 +30,7 @@ const data = [
 export default function Stats() {
   return (
     <section className="relative border-y border-line bg-ink-50 py-10 sm:py-14">
-      <div className="mx-auto max-w-[1240px] container-x">
+      <div className="mx-auto max-w-[1200px] container-x">
         <div className="grid gap-8 sm:gap-10 md:grid-cols-4">
           {data.map((d, i) => (
             <motion.div
