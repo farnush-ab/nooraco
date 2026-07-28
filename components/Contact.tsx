@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { ArrowUpLeft, Instagram, MessageCircle, Phone } from "lucide-react";
+import Magnetic from "./ui/Magnetic";
 
 export default function Contact() {
   return (
@@ -20,7 +21,7 @@ export default function Contact() {
             className="pointer-events-none absolute inset-0 opacity-25"
             style={{
               backgroundImage:
-                "radial-gradient(rgba(239,232,214,0.25) 1px, transparent 1px)",
+                "radial-gradient(rgba(174,188,197,0.22) 1px, transparent 1px)",
               backgroundSize: "22px 22px",
             }}
           />
@@ -43,13 +44,15 @@ export default function Contact() {
               </p>
             </div>
             <div className="flex flex-col gap-3 lg:col-span-4 lg:items-end">
-              <a
-                href="tel:+982100000000"
-                className="group inline-flex items-center gap-3 rounded-full bg-ink-50 px-6 py-4 text-ink-900 transition-colors hover:bg-ink-500"
-              >
-                <Phone className="h-4 w-4" />
-                <span className="serif text-lg">۰۲۱ — ۰۰۰ ۰۰ ۰۰۰</span>
-              </a>
+              <Magnetic strength={0.3}>
+                <a
+                  href="tel:+982100000000"
+                  className="sheen group inline-flex items-center gap-3 rounded-full bg-ink-50 px-6 py-4 text-ink-900 transition-colors hover:bg-ink-300"
+                >
+                  <Phone className="h-4 w-4" />
+                  <span className="serif text-lg">۰۲۱ — ۰۰۰ ۰۰ ۰۰۰</span>
+                </a>
+              </Magnetic>
               <a
                 href="#"
                 className="hover-line text-[11px] uppercase tracking-widest2 text-ink-100/80"

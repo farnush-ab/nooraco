@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import { ArrowUpLeft } from "lucide-react";
+import TiltSpot from "./ui/TiltSpot";
 
 const cats = [
   { title: "سوزن و قیچی", en: "Needles & Scissors", count: 540, kind: "needle", span: "lg:col-span-6 lg:row-span-2 aspect-[4/5] lg:aspect-auto" },
@@ -101,50 +102,63 @@ export default function Bento() {
         {/* bento grid */}
         <div className="mt-12 grid grid-cols-2 gap-3 lg:grid-cols-12 lg:gap-4">
           {cats.map((c, i) => (
-            <motion.a
+            <motion.div
               key={c.title}
-              href="#"
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7, delay: i * 0.05 }}
-              className={`group relative col-span-2 overflow-hidden rounded-2xl bg-ink-900 text-ink-100 sm:rounded-3xl ${c.span}`}
+              className={`col-span-2 ${c.span}`}
             >
-              {/* corner meta */}
-              <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between p-4 sm:p-5">
-                <span className="kicker text-ink-100/60">0{i + 1}</span>
-                <span className="kicker text-ink-100/60">
-                  {c.count.toLocaleString("fa-IR")}
-                </span>
-              </div>
-              {/* illustration */}
-              <div className="absolute inset-6 sm:inset-8 flex items-center justify-center">
-                <motion.div
-                  whileHover={{ scale: 1.08, rotate: -4 }}
-                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                  className="h-2/3 w-2/3 sm:h-3/4 sm:w-3/4"
+              <TiltSpot max={7} className="h-full w-full">
+                <a
+                  href="#"
+                  className="group relative flex h-full w-full overflow-hidden rounded-2xl bg-ink-900 text-ink-100 sm:rounded-3xl"
                 >
-                  <Illus kind={c.kind} />
-                </motion.div>
-              </div>
-              {/* label bottom */}
-              <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between p-4 sm:p-5">
-                <div>
-                  <div className="serif text-base text-ink-100 sm:text-lg">
-                    {c.title}
+                  {/* corner meta */}
+                  <div
+                    className="absolute inset-x-0 top-0 z-10 flex items-center justify-between p-4 sm:p-5"
+                    style={{ transform: "translateZ(28px)" }}
+                  >
+                    <span className="kicker text-ink-100/60">0{i + 1}</span>
+                    <span className="kicker text-ink-100/60">
+                      {c.count.toLocaleString("fa-IR")}
+                    </span>
                   </div>
-                  <div className="mt-0.5 kicker text-ink-100/50">{c.en}</div>
-                </div>
-                <span className="grid h-8 w-8 place-items-center rounded-full border border-ink-100/30 text-ink-100 transition-transform group-hover:-rotate-45">
-                  <ArrowUpLeft className="h-3 w-3" />
-                </span>
-              </div>
-              {/* hover glow */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0 bg-gradient-to-br from-ink-800/0 via-ink-800/0 to-ink-800/25 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-              />
-            </motion.a>
+                  {/* illustration */}
+                  <div className="absolute inset-6 sm:inset-8 flex items-center justify-center">
+                    <motion.div
+                      whileHover={{ scale: 1.08, rotate: -4 }}
+                      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                      style={{ transform: "translateZ(46px)" }}
+                      className="h-2/3 w-2/3 sm:h-3/4 sm:w-3/4"
+                    >
+                      <Illus kind={c.kind} />
+                    </motion.div>
+                  </div>
+                  {/* label bottom */}
+                  <div
+                    className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between p-4 sm:p-5"
+                    style={{ transform: "translateZ(34px)" }}
+                  >
+                    <div>
+                      <div className="serif text-base text-ink-100 sm:text-lg">
+                        {c.title}
+                      </div>
+                      <div className="mt-0.5 kicker text-ink-100/50">{c.en}</div>
+                    </div>
+                    <span className="grid h-8 w-8 place-items-center rounded-full border border-ink-100/30 text-ink-100 transition-transform group-hover:-rotate-45">
+                      <ArrowUpLeft className="h-3 w-3" />
+                    </span>
+                  </div>
+                  {/* hover glow */}
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 bg-gradient-to-br from-ink-800/0 via-ink-800/0 to-ink-800/25 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+                  />
+                </a>
+              </TiltSpot>
+            </motion.div>
           ))}
         </div>
       </div>
