@@ -100,6 +100,17 @@ html { scroll-behavior: smooth; }
 .perspective { perspective: 1400px; perspective-origin: 50% 50%; }
 .preserve-3d { transform-style: preserve-3d; }
 
+/* Embossed hero wordmark — filled with the backdrop tones + a soft bevel so
+   it reads as if carved into the two-tone studio background. */
+.hero-emboss {
+  background: linear-gradient(100deg, #33496485 0%, #35496185 44%, #7c828acc 56%, #9aa0a7dd 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.16), 0 -1px 1px rgba(0, 0, 0, 0.32),
+    0 2px 8px rgba(8, 16, 28, 0.25);
+}
+
 /* Film grain — very subtle, sits above everything, ignores pointer */
 .grain-overlay {
   position: fixed;
