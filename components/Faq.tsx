@@ -18,7 +18,7 @@ export default function Faq() {
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-4">
             <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest2 text-ink-900/60">
-              <span>۰۸ · faq</span>
+              <span>۰۷ · faq</span>
               <span className="h-px w-8 bg-line" />
             </div>
             <h2 className="display mt-4 text-2xl leading-[1] text-ink-900 sm:text-3xl">

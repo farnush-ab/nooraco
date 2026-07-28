@@ -19,152 +19,154 @@ export default function Hero() {
     target: ref,
     offset: ["start start", "end start"],
   });
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, -70]);
-  const fade = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
-  const sceneScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const fade = useTransform(scrollYProgress, [0, 0.9], [1, 0]);
 
   return (
     <section
       ref={ref}
-      className="relative isolate flex min-h-[100svh] flex-col justify-between overflow-hidden bg-ink-950 pt-28 pb-8 text-ink-100 sm:pt-32 sm:pb-12"
+      className="relative isolate flex min-h-[94svh] flex-col justify-center overflow-hidden pt-28 pb-10 sm:pt-32"
     >
-      {/* deep brand-navy field */}
+      {/* soft light field */}
       <div
         aria-hidden
         className="absolute inset-0 -z-20"
         style={{
           background:
-            "radial-gradient(120% 90% at 70% 8%, #17476b 0%, #102b42 42%, #081726 100%)",
+            "radial-gradient(120% 100% at 30% 15%, #f6f7f9 0%, #ebebee 55%, #e3e7ea 100%)",
         }}
       />
-      {/* ambient glows */}
-      <div className="blob left-[8%] top-[12%] -z-10 h-[420px] w-[420px] bg-ink-700/25" />
-      <div className="blob right-[-6%] bottom-[6%] -z-10 h-[520px] w-[520px] bg-ink-800/40" />
-
-      {/* 3D canvas — full bleed, sits behind the copy */}
-      <motion.div
-        aria-hidden
-        style={reduce ? undefined : { scale: sceneScale }}
-        className="pointer-events-none absolute inset-0 -z-10"
-      >
-        <div className="pointer-events-auto absolute inset-0">
-          <HeroScene />
-        </div>
-      </motion.div>
-
-      {/* legibility scrim on the reading (right, RTL) side */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(270deg, rgba(8,23,38,0.85) 0%, rgba(8,23,38,0.45) 34%, rgba(8,23,38,0) 62%)",
-        }}
-      />
-      {/* fine grid + grain */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.06]"
-        style={{
-          backgroundImage:
-            "linear-gradient(#ebebee 1px, transparent 1px), linear-gradient(90deg, #ebebee 1px, transparent 1px)",
-          backgroundSize: "44px 44px",
-          maskImage: "radial-gradient(ellipse at 60% 40%, black 0%, transparent 75%)",
-        }}
-      />
+      <div className="blob left-[-10%] top-[6%] -z-10 h-[380px] w-[380px] bg-ink-300/40" />
+      <div className="blob right-[-8%] bottom-[2%] -z-10 h-[420px] w-[420px] bg-ink-500/20" />
 
       <motion.div
         style={{ y: reduce ? 0 : contentY, opacity: reduce ? 1 : fade }}
-        className="relative mx-auto flex w-full max-w-[1280px] flex-1 flex-col container-x"
+        className="relative mx-auto grid w-full max-w-[1240px] items-center gap-8 container-x lg:grid-cols-12 lg:gap-10"
       >
-        {/* top meta strip */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex items-baseline justify-between text-[10px] uppercase tracking-widest2 text-ink-100/55"
-        >
-          <span>Est. 1393 · Tehran</span>
-          <span className="hidden sm:inline">issue 01 · ۲۰۲۶</span>
-          <span className="serif italic normal-case text-sm text-ink-100/70">no. 001</span>
-        </motion.div>
-
-        {/* headline block */}
-        <div className="mt-auto max-w-3xl pt-16 sm:pt-24">
+        {/* text — right in RTL */}
+        <div className="order-2 lg:order-1 lg:col-span-6">
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
             className="flex items-center gap-3"
           >
-            <span className="block h-px w-8 bg-ink-100/40" />
-            <span className="kicker text-ink-100/60">industrial sewing parts</span>
+            <span className="block h-px w-8 bg-ink-900/40" />
+            <span className="kicker">industrial sewing parts</span>
+            <span className="serif italic text-sm text-ink-900/60">· از ۱۳۹۳</span>
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="display mt-6 text-[9.5vw] leading-[1.04] text-ink-100 sm:text-[6vw] lg:text-[4.2vw]"
+            transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="display mt-6 text-[10vw] leading-[1.05] text-ink-900 sm:text-[6vw] lg:text-[3.9vw]"
           >
             قطعاتی که کارگاهِ شما را{" "}
-            <span className="italic-serif italic text-ink-300">زنده</span>{" "}
+            <span className="italic-serif italic text-ink-800">زنده</span>{" "}
             نگه می‌دارند.
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.5 }}
-            className="mt-8 max-w-md text-sm leading-8 text-ink-100/75 sm:text-base"
+            transition={{ duration: 0.85, delay: 0.4 }}
+            className="mt-7 max-w-md text-sm leading-8 text-ink-900/75 sm:text-base"
           >
             نوراکو، مرجع تخصصی قطعات چرخ‌های خیاطی صنعتی در ایران —
-            همراهِ کارگاه‌های حرفه‌ای از سال ۱۳۹۳.
+            همراهِ کارگاه‌های حرفه‌ای، ساده و قابل‌اعتماد.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.65 }}
-            className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3"
+            transition={{ duration: 0.85, delay: 0.55 }}
+            className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3"
           >
             <Magnetic strength={0.35}>
               <a
                 href="#bento"
-                className="group inline-flex items-center gap-3 rounded-full bg-ink-100 px-6 py-3 text-sm text-ink-900 transition-colors hover:bg-white"
+                className="group inline-flex items-center gap-3 rounded-full bg-ink-900 px-6 py-3 text-sm text-ink-100 transition-colors hover:bg-ink-800"
               >
                 <span>کاوش در مجموعه</span>
                 <ArrowUpLeft className="h-4 w-4 transition-transform group-hover:-rotate-45" />
               </a>
             </Magnetic>
             <a
-              href="#craft"
-              className="hover-line text-[11px] uppercase tracking-widest2 text-ink-100/70"
+              href="#chapters"
+              className="hover-line text-[11px] uppercase tracking-widest2 text-ink-900/70"
             >
-              داستان برند
+              بر اساس چرخِ شما
             </a>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9, duration: 0.6 }}
+            className="mt-10 flex items-center gap-6 text-[10px] uppercase tracking-widest2 text-ink-900/45"
+          >
+            <span>۶۰۰۰+ کد کالا</span>
+            <span className="h-px w-6 bg-ink-900/20" />
+            <span>۳۲ استان تحت پوشش</span>
           </motion.div>
         </div>
 
-        {/* bottom meta row */}
+        {/* 3D stage — left */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.1, duration: 0.7 }}
-          className="mt-14 flex items-center justify-between gap-6 border-t border-ink-100/15 pt-5 text-[10px] uppercase tracking-widest2 text-ink-100/50 sm:mt-16"
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          className="order-1 lg:order-2 lg:col-span-6"
         >
-          <span className="flex items-center gap-2">
-            <span className="serif italic normal-case text-sm text-ink-100/70">scroll</span>
-            <motion.span
-              animate={{ y: [0, 3, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity }}
-            >
-              ↓
-            </motion.span>
-          </span>
-          <span className="hidden sm:inline">۶۰۰۰+ کد کالا · ۳۲ استان تحت پوشش</span>
-          <span>Nooraco Studio™</span>
+          <div className="relative aspect-square w-full overflow-hidden rounded-[2rem] border border-white/60 sm:aspect-[5/4] lg:aspect-square">
+            {/* stage backdrop */}
+            <div
+              aria-hidden
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(90% 80% at 50% 30%, #f3f6f8 0%, #dde5ea 60%, #cdd8e0 100%)",
+              }}
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-[0.5]"
+              style={{
+                backgroundImage:
+                  "radial-gradient(rgba(16,43,66,0.10) 1px, transparent 1px)",
+                backgroundSize: "22px 22px",
+                maskImage: "radial-gradient(ellipse at center, black 20%, transparent 72%)",
+              }}
+            />
+            <div className="absolute inset-0">
+              <HeroScene />
+            </div>
+            {/* corner caption */}
+            <div className="pointer-events-none absolute right-5 top-5 text-right">
+              <div className="kicker text-ink-900/45">figure 001</div>
+              <div className="serif italic mt-1 text-sm text-ink-900/70">
+                the machine
+              </div>
+            </div>
+          </div>
         </motion.div>
+      </motion.div>
+
+      {/* scroll cue */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.1, duration: 0.6 }}
+        className="relative mx-auto mt-10 flex w-full max-w-[1240px] items-center justify-between gap-6 container-x text-[10px] uppercase tracking-widest2 text-ink-900/45"
+      >
+        <span className="flex items-center gap-2">
+          <span className="serif italic normal-case text-sm text-ink-900/65">scroll</span>
+          <motion.span animate={{ y: [0, 3, 0] }} transition={{ duration: 1.8, repeat: Infinity }}>
+            ↓
+          </motion.span>
+        </span>
+        <span>Nooraco Studio™ · Tehran</span>
       </motion.div>
     </section>
   );

@@ -29,7 +29,7 @@ export default function Contact() {
           <div className="relative grid gap-12 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-8">
               <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest2 text-ink-100/60">
-                <span>۰۹ · contact</span>
+                <span>۰۸ · contact</span>
                 <span className="h-px w-8 bg-ink-50/25" />
                 <span className="serif italic normal-case text-sm text-ink-100/70">
                   let's talk

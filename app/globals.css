@@ -123,6 +123,19 @@ html { scroll-behavior: smooth; }
   border: 1px solid rgba(174, 188, 197, 0.14);
 }
 
+/* Machine blueprint reveal (Chapters) — outline draws in, callouts fade in */
+.bp-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.9s cubic-bezier(.22, 1, .36, 1);
+}
+.group:hover .bp-draw { stroke-dashoffset: 0; }
+.bp-call { opacity: 0; transition: opacity 0.45s ease; }
+.group:hover .bp-call { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .bp-draw { transition: none; }
+}
+
 /* Sheen sweep on hover (used on cards / buttons) */
 .sheen { position: relative; overflow: hidden; }
 .sheen::before {

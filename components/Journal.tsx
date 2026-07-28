@@ -32,7 +32,7 @@ export default function Journal() {
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest2 text-ink-900/60">
-              <span>۰۷ · journal</span>
+              <span>۰۶ · journal</span>
               <span className="h-px w-8 bg-line" />
               <span className="serif italic normal-case text-sm text-ink-900/60">notes & essays</span>
             </div>
