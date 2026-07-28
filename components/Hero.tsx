@@ -95,7 +95,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16, letterSpacing: "0.35em" }}
           animate={{ opacity: 1, y: 0, letterSpacing: "0.14em" }}
           transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-          className="hero-emboss text-[13vw] font-semibold leading-none sm:text-[11vw] lg:text-[9rem]"
+          className="hero-glass hero-glass-frost px-4 text-[13vw] leading-none sm:text-[11vw] lg:text-[9rem]"
         >
           NOORACO
         </motion.h1>
