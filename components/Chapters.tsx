@@ -18,7 +18,7 @@ const chapters = [
     desc: "اورلاک‌های ۳ تا ۵ نخ برای پرداخت لبه و دوخت کشسان.",
     speed: "۷۰۰۰",
     illus: "overlock",
-    accent: "bg-ink-100 text-ink-900",
+    accent: "bg-ink-300 text-ink-900",
   },
   {
     en: "Coverstitch",
@@ -26,7 +26,7 @@ const chapters = [
     desc: "کاوراستیچ برای دوخت تزئینی و حاشیه‌ای روی پارچه‌های کشی.",
     speed: "۶۲۰۰",
     illus: "cover",
-    accent: "bg-ink-800 text-ink-900",
+    accent: "bg-ink-800 text-ink-100",
   },
 ];
 
@@ -34,12 +34,12 @@ function ChapterArt({ kind }: { kind: string }) {
   return (
     <svg viewBox="0 0 400 260" className="h-full w-auto">
       <defs>
-        <linearGradient id="c-body" x1="0" x2="1" y1="0" y2="1">
+        <linearGradient id={`c-body-${kind}`} x1="0" x2="1" y1="0" y2="1">
           <stop offset="0" stopColor="currentColor" stopOpacity="0.9" />
           <stop offset="1" stopColor="currentColor" stopOpacity="0.6" />
         </linearGradient>
       </defs>
-      <g fill="url(#c-body)">
+      <g fill={`url(#c-body-${kind})`}>
         {kind === "straight" && (
           <>
             <rect x="20" y="180" width="360" height="40" rx="6" />
@@ -75,8 +75,8 @@ function ChapterArt({ kind }: { kind: string }) {
 
 export default function Chapters() {
   return (
-    <section id="chapters" className="relative py-16 sm:py-24">
-      <div className="mx-auto max-w-[1200px] container-x">
+    <section id="chapters" className="relative py-12 sm:py-20">
+      <div className="mx-auto max-w-[1180px] container-x">
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest2 text-ink-900/60">
@@ -84,7 +84,7 @@ export default function Chapters() {
               <span className="h-px w-8 bg-line" />
               <span className="serif italic normal-case text-sm text-ink-900/60">by machine</span>
             </div>
-            <h2 className="display mt-4 text-3xl leading-[1] text-ink-900 sm:text-4xl lg:text-5xl">
+            <h2 className="display mt-4 text-2xl leading-[1] text-ink-900 sm:text-3xl lg:text-4xl">
               بر اساس <span className="italic-serif italic text-ink-800">چرخِ شما</span>
             </h2>
           </div>
@@ -94,8 +94,8 @@ export default function Chapters() {
         </div>
       </div>
 
-      {/* sticky-ish stacking chapters */}
-      <div className="mt-12 flex flex-col gap-4 sm:gap-6">
+      {/* stacking chapters */}
+      <div className="mt-10 flex flex-col gap-4 sm:gap-5">
         {chapters.map((c, i) => (
           <ChapterCard key={c.name} chapter={c} index={i} />
         ))}
@@ -125,14 +125,14 @@ function ChapterCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-      className="mx-6 sm:mx-14 lg:mx-24 xl:mx-[140px]"
+      className="mx-auto w-full max-w-[1180px] container-x"
     >
       <a
         href="#"
-        className={`group relative flex flex-col overflow-hidden rounded-3xl ${chapter.accent} md:min-h-[300px] md:flex-row`}
+        className={`group relative flex flex-col overflow-hidden rounded-3xl ${chapter.accent} md:min-h-[220px] md:flex-row`}
       >
         {/* left copy */}
-        <div className="relative flex flex-1 flex-col justify-between p-6 sm:p-8 lg:p-10">
+        <div className="relative flex flex-1 flex-col justify-between p-5 sm:p-7">
           <div className="flex items-center justify-between">
             <span className="kicker" style={{ color: "currentColor", opacity: 0.65 }}>
               chapter · 0{index + 1}
@@ -140,16 +140,16 @@ function ChapterCard({
             <span className="serif italic text-sm opacity-70">— {chapter.en}</span>
           </div>
 
-          <div className="mt-8">
-            <h3 className="display text-[9vw] leading-[0.95] sm:text-[5vw] lg:text-[4vw]">
+          <div className="mt-6">
+            <h3 className="display text-4xl leading-[0.95] sm:text-5xl">
               {chapter.name}
             </h3>
-            <p className="mt-4 max-w-sm text-sm leading-7 opacity-80">
+            <p className="mt-3 max-w-sm text-sm leading-7 opacity-80">
               {chapter.desc}
             </p>
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center gap-6">
+          <div className="mt-6 flex flex-wrap items-center gap-6">
             <div>
               <div className="kicker" style={{ color: "currentColor", opacity: 0.65 }}>
                 Max speed
@@ -165,10 +165,10 @@ function ChapterCard({
         </div>
 
         {/* right visual */}
-        <div className="relative flex flex-1 items-center justify-center overflow-hidden p-6 sm:p-8">
+        <div className="relative flex flex-1 items-center justify-center overflow-hidden p-5 sm:p-7">
           <motion.div
             style={{ y }}
-            className="relative flex h-40 w-full max-w-md items-center justify-center sm:h-52 lg:h-60"
+            className="relative flex h-32 w-full max-w-sm items-center justify-center sm:h-40 lg:h-44"
           >
             <div className="pointer-events-none absolute inset-0">
               <div
@@ -195,7 +195,7 @@ function ChapterCard({
 
           {/* corner big index */}
           <span
-            className="pointer-events-none absolute bottom-3 left-6 select-none text-[24vw] leading-none opacity-[0.06] sm:text-[14vw] lg:text-[10vw]"
+            className="pointer-events-none absolute bottom-2 left-5 select-none text-[16vw] leading-none opacity-[0.06] sm:text-[9vw] lg:text-[6vw]"
             style={{ fontFamily: "var(--font-serif)", fontStyle: "italic" }}
           >
             0{index + 1}

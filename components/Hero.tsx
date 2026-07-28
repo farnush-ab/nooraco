@@ -105,7 +105,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="display mt-6 text-[11vw] leading-[1.02] text-ink-100 sm:text-[7vw] lg:text-[5vw]"
+            className="display mt-6 text-[9.5vw] leading-[1.04] text-ink-100 sm:text-[6vw] lg:text-[4.2vw]"
           >
             قطعاتی که کارگاهِ شما را{" "}
             <span className="italic-serif italic text-ink-300">زنده</span>{" "}

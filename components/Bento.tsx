@@ -4,12 +4,12 @@ import { ArrowUpLeft } from "lucide-react";
 import TiltSpot from "./ui/TiltSpot";
 
 const cats = [
-  { title: "سوزن و قیچی", en: "Needles & Scissors", count: 540, kind: "needle", span: "lg:col-span-6 lg:row-span-2 aspect-[4/5] lg:aspect-auto" },
-  { title: "چرخ‌دنده", en: "Gears", count: 612, kind: "gear", span: "lg:col-span-3 aspect-square" },
-  { title: "ماسوره", en: "Bobbins", count: 280, kind: "bobbin", span: "lg:col-span-3 aspect-square" },
-  { title: "موتور و کلاچ", en: "Motors & Clutches", count: 124, kind: "motor", span: "lg:col-span-4 aspect-[4/3]" },
-  { title: "ابزار سرویس", en: "Service Tools", count: 89, kind: "tool", span: "lg:col-span-4 aspect-[4/3]" },
-  { title: "برد الکترونیک", en: "Electronic Boards", count: 67, kind: "board", span: "lg:col-span-4 aspect-[4/3]" },
+  { title: "سوزن و قیچی", en: "Needles & Scissors", count: 540, kind: "needle", span: "col-span-2 lg:col-span-6 lg:row-span-2 aspect-[5/4] sm:aspect-square lg:aspect-auto" },
+  { title: "چرخ‌دنده", en: "Gears", count: 612, kind: "gear", span: "col-span-1 lg:col-span-3 aspect-square" },
+  { title: "ماسوره", en: "Bobbins", count: 280, kind: "bobbin", span: "col-span-1 lg:col-span-3 aspect-square" },
+  { title: "موتور و کلاچ", en: "Motors & Clutches", count: 124, kind: "motor", span: "col-span-1 lg:col-span-4 aspect-[4/3]" },
+  { title: "ابزار سرویس", en: "Service Tools", count: 89, kind: "tool", span: "col-span-1 lg:col-span-4 aspect-[4/3]" },
+  { title: "برد الکترونیک", en: "Electronic Boards", count: 67, kind: "board", span: "col-span-2 lg:col-span-4 aspect-[16/9] sm:aspect-[4/3]" },
 ];
 
 function Illus({ kind }: { kind: string }) {
@@ -78,8 +78,8 @@ function Illus({ kind }: { kind: string }) {
 
 export default function Bento() {
   return (
-    <section id="bento" className="relative py-16 sm:py-24">
-      <div className="mx-auto max-w-[1200px] container-x">
+    <section id="bento" className="relative py-12 sm:py-20">
+      <div className="mx-auto max-w-[1180px] container-x">
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest2 text-ink-900/60">
@@ -87,7 +87,7 @@ export default function Bento() {
               <span className="h-px w-8 bg-line" />
               <span className="serif italic normal-case text-sm text-ink-900/60">six chapters</span>
             </div>
-            <h2 className="display mt-4 text-3xl leading-[1] text-ink-900 sm:text-4xl lg:text-5xl">
+            <h2 className="display mt-4 text-2xl leading-[1] text-ink-900 sm:text-3xl lg:text-4xl">
               مجموعه‌ی <span className="italic-serif italic text-ink-800">کامل</span>
             </h2>
           </div>
@@ -100,7 +100,7 @@ export default function Bento() {
         </div>
 
         {/* bento grid */}
-        <div className="mt-12 grid grid-cols-2 gap-3 lg:grid-cols-12 lg:gap-4">
+        <div className="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-12 lg:gap-3.5">
           {cats.map((c, i) => (
             <motion.div
               key={c.title}
@@ -108,7 +108,7 @@ export default function Bento() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7, delay: i * 0.05 }}
-              className={`col-span-2 ${c.span}`}
+              className={c.span}
             >
               <TiltSpot max={7} className="h-full w-full">
                 <a
@@ -126,12 +126,12 @@ export default function Bento() {
                     </span>
                   </div>
                   {/* illustration */}
-                  <div className="absolute inset-6 sm:inset-8 flex items-center justify-center">
+                  <div className="absolute inset-5 sm:inset-6 flex items-center justify-center">
                     <motion.div
                       whileHover={{ scale: 1.08, rotate: -4 }}
                       transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                       style={{ transform: "translateZ(46px)" }}
-                      className="h-2/3 w-2/3 sm:h-3/4 sm:w-3/4"
+                      className="h-1/2 w-1/2 sm:h-3/5 sm:w-3/5"
                     >
                       <Illus kind={c.kind} />
                     </motion.div>

@@ -103,8 +103,8 @@ function TiltCard({ children }: { children: React.ReactNode }) {
 
 export default function Products() {
   return (
-    <section className="relative py-16 sm:py-24">
-      <div className="mx-auto max-w-[1200px] container-x">
+    <section className="relative py-12 sm:py-20">
+      <div className="mx-auto max-w-[1180px] container-x">
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest2 text-ink-900/60">
@@ -112,7 +112,7 @@ export default function Products() {
               <span className="h-px w-8 bg-line" />
               <span className="serif italic normal-case text-sm text-ink-900/60">this season</span>
             </div>
-            <h2 className="display mt-4 text-3xl leading-[1] text-ink-900 sm:text-4xl lg:text-5xl">
+            <h2 className="display mt-4 text-2xl leading-[1] text-ink-900 sm:text-3xl lg:text-4xl">
               منتخبِ <span className="italic-serif italic text-ink-800">امسال</span>
             </h2>
           </div>
@@ -121,7 +121,7 @@ export default function Products() {
           </a>
         </div>
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
           {products.map((p, i) => (
             <motion.div
               key={p.name}
@@ -150,7 +150,7 @@ export default function Products() {
                   </div>
 
                   {/* illus */}
-                  <div className="relative flex aspect-square items-center justify-center px-8">
+                  <div className="relative flex aspect-square items-center justify-center px-6 sm:px-8">
                     <motion.div
                       whileHover={{ scale: 1.08, rotate: -4 }}
                       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}

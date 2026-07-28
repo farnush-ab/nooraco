@@ -1,17 +1,34 @@
 "use client";
-import { animate, motion, useInView, useMotionValue, useTransform } from "framer-motion";
+import {
+  animate,
+  motion,
+  useInView,
+  useMotionValue,
+  useReducedMotion,
+  useTransform,
+} from "framer-motion";
 import { useEffect, useRef } from "react";
 
 function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  // amount-based trigger is reliable on short mobile viewports where a
+  // negative root margin would fire too late (or never) and leave "۰".
+  const inView = useInView(ref, { once: true, amount: 0.3 });
+  const reduce = useReducedMotion();
   const v = useMotionValue(0);
   const rounded = useTransform(v, (latest) =>
     Math.round(latest).toLocaleString("fa-IR")
   );
   useEffect(() => {
-    if (inView) animate(v, to, { duration: 2.2, ease: [0.22, 1, 0.36, 1] });
-  }, [inView, to, v]);
+    if (reduce) {
+      v.set(to);
+      return;
+    }
+    if (inView) {
+      const controls = animate(v, to, { duration: 2, ease: [0.22, 1, 0.36, 1] });
+      return () => controls.stop();
+    }
+  }, [inView, to, v, reduce]);
   return (
     <span ref={ref} className="inline-flex items-baseline">
       <motion.span>{rounded}</motion.span>
@@ -45,7 +62,7 @@ export default function Stats() {
                 <span className="kicker">0{i + 1}</span>
                 <span className="serif italic text-ink-800 text-xs">— {d.en}</span>
               </div>
-              <div className="display mt-3 text-3xl leading-none text-ink-900 sm:text-4xl lg:text-5xl">
+              <div className="display mt-3 text-2xl leading-none text-ink-900 sm:text-3xl lg:text-4xl">
                 <Counter to={d.value} suffix={d.suffix} />
               </div>
               <div className="mt-3 text-xs text-ink-900/60">{d.label}</div>

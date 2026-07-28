@@ -9,8 +9,8 @@ const principles = [
 
 export default function Manifesto() {
   return (
-    <section id="manifesto" className="relative overflow-hidden py-20 sm:py-28 lg:py-32">
-      <div className="mx-auto max-w-[1200px] container-x">
+    <section id="manifesto" className="relative overflow-hidden py-16 sm:py-24">
+      <div className="mx-auto max-w-[1180px] container-x">
         <div className="flex items-center gap-4 text-[10px] uppercase tracking-widest2 text-ink-900/55">
           <span>۰۱ · manifesto</span>
           <span className="h-px flex-1 bg-line" />
@@ -22,7 +22,7 @@ export default function Manifesto() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10 max-w-4xl display text-[7vw] leading-[1.2] text-ink-900 sm:text-[4.5vw] lg:text-[3vw]"
+          className="mt-8 max-w-4xl display text-[6vw] leading-[1.25] text-ink-900 sm:text-[3.6vw] lg:text-[2.4vw]"
         >
           ما به سه چیز باور داریم:{" "}
           <span className="italic-serif italic text-ink-800">کیفیتِ پایدار</span>،

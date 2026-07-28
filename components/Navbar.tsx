@@ -80,65 +80,73 @@ export default function Navbar() {
 
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] lg:hidden"
+          <motion.aside
+            initial={{ clipPath: "inset(0 0 100% 0)" }}
+            animate={{ clipPath: "inset(0 0 0% 0)" }}
+            exit={{ clipPath: "inset(0 0 100% 0)" }}
+            transition={{ type: "tween", ease: [0.22, 1, 0.36, 1], duration: 0.6 }}
+            className="fixed inset-0 z-[60] flex flex-col bg-ink-950 text-ink-100 lg:hidden"
           >
-            <div
-              className="absolute inset-0 bg-ink-900/60 backdrop-blur-sm"
-              onClick={() => setOpen(false)}
-            />
-            <motion.aside
-              initial={{ y: "-100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "-100%" }}
-              transition={{ type: "tween", ease: [0.22, 1, 0.36, 1], duration: 0.6 }}
-              className="absolute inset-x-0 top-0 flex flex-col gap-8 bg-ink-100 px-6 pb-10 pt-6"
-            >
-              <div className="flex items-center justify-between">
-                <Logo />
-                <button
-                  onClick={() => setOpen(false)}
-                  className="grid h-10 w-10 place-items-center rounded-full border border-ink-900/20"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-              <ul className="flex flex-col divide-y divide-line border-y border-line">
+            {/* ambient depth */}
+            <div className="blob right-[-20%] top-[-10%] h-72 w-72 bg-ink-800/50" />
+            <div className="blob left-[-20%] bottom-[-10%] h-80 w-80 bg-ink-700/30" />
+
+            <div className="relative flex items-center justify-between px-6 pt-6 container-x">
+              <Logo light />
+              <button
+                onClick={() => setOpen(false)}
+                className="grid h-11 w-11 place-items-center rounded-full border border-ink-100/25 text-ink-100"
+                aria-label="close"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <nav className="relative flex flex-1 flex-col justify-center px-6 container-x">
+              <ul className="flex flex-col">
                 {links.map((l, i) => (
                   <motion.li
                     key={l.label}
-                    initial={{ y: 12, opacity: 0 }}
+                    initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.06 * i }}
+                    transition={{ delay: 0.12 + 0.07 * i, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="border-b border-ink-100/12"
                   >
                     <a
                       onClick={() => setOpen(false)}
                       href={l.href}
-                      className="flex items-baseline justify-between py-5"
+                      className="group flex items-center justify-between py-5"
                     >
-                      <span className="serif text-3xl text-ink-900">{l.label}</span>
-                      <span className="kicker">0{i + 1}</span>
+                      <span className="serif text-4xl text-ink-100 transition-transform group-active:-translate-x-1">
+                        {l.label}
+                      </span>
+                      <span className="kicker text-ink-100/40">0{i + 1}</span>
                     </a>
                   </motion.li>
                 ))}
               </ul>
+            </nav>
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45, duration: 0.5 }}
+              className="relative px-6 pb-10 container-x"
+            >
               <a
                 href="#contact"
                 onClick={() => setOpen(false)}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-ink-900 px-5 py-4 text-sm text-ink-100"
+                className="flex items-center justify-center gap-2 rounded-full bg-ink-100 px-5 py-4 text-sm text-ink-900"
               >
                 تماس با ما
                 <ArrowUpLeft className="h-4 w-4" />
               </a>
-              <div className="flex items-center justify-between text-xs text-ink-900/60">
+              <div className="mt-6 flex items-center justify-between text-xs text-ink-100/55">
                 <span>hello@nooraco.ir</span>
                 <span>Tehran · IR</span>
               </div>
-            </motion.aside>
-          </motion.div>
+            </motion.div>
+          </motion.aside>
         )}
       </AnimatePresence>
     </>

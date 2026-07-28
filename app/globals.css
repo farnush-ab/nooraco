@@ -52,19 +52,25 @@ html { scroll-behavior: smooth; }
   line-height: 1.05;
 }
 
-.eyebrow {
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: rgba(16,43,66,0.55);
-  font-weight: 500;
-}
-.kicker {
-  font-size: 9px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: rgba(16,43,66,0.5);
-  font-weight: 500;
+/* These live in @layer components so Tailwind text-* utilities (in the
+   utilities layer) can override their default color. Without the layer they
+   are unlayered CSS and win the cascade, forcing dark text even where a
+   light `text-ink-100/..` utility is applied (invisible on dark bg). */
+@layer components {
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(16, 43, 66, 0.55);
+    font-weight: 500;
+  }
+  .kicker {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(16, 43, 66, 0.5);
+    font-weight: 500;
+  }
 }
 
 .text-balance { text-wrap: balance; }
@@ -157,8 +163,8 @@ html { scroll-behavior: smooth; }
   border-radius: 6px;
 }
 
-/* Bigger margins */
-.container-x { padding-left: 28px; padding-right: 28px; }
-@media (min-width: 640px)  { .container-x { padding-left: 72px;  padding-right: 72px;  } }
-@media (min-width: 1024px) { .container-x { padding-left: 128px; padding-right: 128px; } }
-@media (min-width: 1440px) { .container-x { padding-left: 180px; padding-right: 180px; } }
+/* Generous side margins */
+.container-x { padding-left: 22px; padding-right: 22px; }
+@media (min-width: 640px)  { .container-x { padding-left: 88px;  padding-right: 88px;  } }
+@media (min-width: 1024px) { .container-x { padding-left: 160px; padding-right: 160px; } }
+@media (min-width: 1440px) { .container-x { padding-left: 220px; padding-right: 220px; } }

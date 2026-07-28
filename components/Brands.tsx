@@ -23,8 +23,8 @@ const brands = [
 
 export default function Brands() {
   return (
-    <section id="brands" className="relative py-16 sm:py-24">
-      <div className="mx-auto max-w-[1200px] container-x">
+    <section id="brands" className="relative py-12 sm:py-20">
+      <div className="mx-auto max-w-[1180px] container-x">
         <div className="flex items-center gap-3 text-[10px] uppercase tracking-widest2 text-ink-900/60">
           <span>۰۵ · brands</span>
           <span className="h-px w-8 bg-line" />
@@ -32,11 +32,11 @@ export default function Brands() {
             in-house
           </span>
         </div>
-        <h2 className="display mt-4 max-w-4xl text-3xl leading-[1] text-ink-900 sm:text-4xl lg:text-5xl">
+        <h2 className="display mt-4 max-w-4xl text-2xl leading-[1] text-ink-900 sm:text-3xl lg:text-4xl">
           دو خط، یک <span className="italic-serif italic text-ink-800">تعهد</span>
         </h2>
 
-        <div className="mt-12 grid gap-4 lg:grid-cols-2 lg:gap-6">
+        <div className="mt-10 grid gap-4 lg:grid-cols-2 lg:gap-5">
           {brands.map((b, i) => (
             <motion.a
               key={b.name}
@@ -45,7 +45,7 @@ export default function Brands() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.8, delay: i * 0.12 }}
-              className={`group relative overflow-hidden rounded-3xl p-6 sm:p-8 lg:p-10 lg:min-h-[340px] ${b.palette}`}
+              className={`group relative overflow-hidden rounded-3xl p-6 sm:p-7 lg:min-h-[260px] ${b.palette}`}
             >
               {/* big shadow brand mark */}
               <div
@@ -65,8 +65,8 @@ export default function Brands() {
                 </span>
               </div>
 
-              <div className="relative mt-10">
-                <h3 className="display text-4xl leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
+              <div className="relative mt-7">
+                <h3 className="display text-3xl leading-[0.95] tracking-tight sm:text-4xl lg:text-5xl">
                   {b.name}
                 </h3>
                 <div className={`mt-3 serif italic text-base ${b.accent}`}>
