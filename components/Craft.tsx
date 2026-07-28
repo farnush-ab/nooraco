@@ -84,7 +84,7 @@ export default function Craft() {
                 className="absolute inset-6 rounded-full bg-ink-900"
                 style={{
                   backgroundImage:
-                    "radial-gradient(circle at 30% 30%, rgba(198,154,92,0.35), transparent 60%)",
+                    "radial-gradient(circle at 30% 30%, rgba(174,188,197,0.35), transparent 60%)",
                 }}
               />
               <motion.svg

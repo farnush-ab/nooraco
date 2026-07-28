@@ -16,7 +16,7 @@ export default function Footer() {
         className="pointer-events-none absolute inset-0 opacity-30"
         style={{
           backgroundImage:
-            "radial-gradient(rgba(184,135,74,0.35) 1px, transparent 1px)",
+            "radial-gradient(rgba(174,188,197,0.30) 1px, transparent 1px)",
           backgroundSize: "32px 32px",
           maskImage:
             "radial-gradient(ellipse at top, black 20%, transparent 65%)",

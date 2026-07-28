@@ -12,10 +12,12 @@ import Journal from "@/components/Journal";
 import Faq from "@/components/Faq";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import ScrollProgress from "@/components/ui/ScrollProgress";
 
 export default function Home() {
   return (
     <main className="relative">
+      <ScrollProgress />
       <Navbar />
       <Hero />
       <Ticker />
@@ -30,6 +32,8 @@ export default function Home() {
       <Faq />
       <Contact />
       <Footer />
+      {/* global film grain */}
+      <div aria-hidden className="grain-overlay" />
     </main>
   );
 }
