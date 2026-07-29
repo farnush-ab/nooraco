@@ -85,7 +85,7 @@ function TiltCard({ children }: { children: React.ReactNode }) {
         rx.set(0);
         ry.set(0);
       }}
-      className="perspective"
+      className="perspective h-full"
     >
       <motion.div
         style={{
@@ -93,7 +93,7 @@ function TiltCard({ children }: { children: React.ReactNode }) {
           rotateY: rYd,
           transformStyle: "preserve-3d",
         }}
-        className="relative"
+        className="relative h-full"
       >
         {children}
       </motion.div>
@@ -121,7 +121,7 @@ export default function Products() {
           </a>
         </div>
 
-        <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-2 items-stretch gap-4 lg:grid-cols-4">
           {products.map((p, i) => (
             <motion.div
               key={p.name}
@@ -129,11 +129,12 @@ export default function Products() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6, delay: i * 0.06 }}
+              className="h-full"
             >
               <TiltCard>
                 <a
                   href="#"
-                  className="group relative block overflow-hidden rounded-2xl bg-ink-50"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-ink-50"
                 >
                   {/* top */}
                   <div className="relative flex items-start justify-between p-4 sm:p-5" style={{ transform: "translateZ(30px)" }}>
@@ -166,8 +167,8 @@ export default function Products() {
                   </div>
 
                   {/* bottom */}
-                  <div className="relative border-t border-line p-4 sm:p-5" style={{ transform: "translateZ(20px)" }}>
-                    <h3 className="text-sm leading-6 text-ink-900">{p.name}</h3>
+                  <div className="relative mt-auto flex flex-1 flex-col border-t border-line p-4 sm:p-5" style={{ transform: "translateZ(20px)" }}>
+                    <h3 className="min-h-[3rem] text-sm leading-6 text-ink-900">{p.name}</h3>
                     <div className="mt-3 flex items-baseline justify-between">
                       <div>
                         {p.old && (
@@ -185,7 +186,7 @@ export default function Products() {
                         {p.rating.toLocaleString("fa-IR")}
                       </span>
                     </div>
-                    <button className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-ink-900/20 py-2.5 text-[11px] uppercase tracking-widest2 transition-colors hover:bg-ink-900 hover:text-ink-100">
+                    <button className="mt-auto flex w-full items-center justify-center gap-2 rounded-full border border-ink-900/20 py-2.5 text-[11px] uppercase tracking-widest2 transition-colors hover:bg-ink-900 hover:text-ink-100">
                       <Plus className="h-3 w-3" />
                       افزودن
                     </button>

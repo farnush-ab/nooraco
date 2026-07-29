@@ -100,6 +100,27 @@ html { scroll-behavior: smooth; }
 .perspective { perspective: 1400px; perspective-origin: 50% 50%; }
 .preserve-3d { transform-style: preserve-3d; }
 
+/* Embossed hero wordmark — filled with the backdrop tones + a soft bevel so
+   it reads as if carved into the two-tone studio background. */
+.hero-emboss {
+  background: linear-gradient(100deg, #33496485 0%, #35496185 44%, #7c828acc 56%, #9aa0a7dd 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.16), 0 -1px 1px rgba(0, 0, 0, 0.32),
+    0 2px 8px rgba(8, 16, 28, 0.25);
+}
+
+/* Frosted-glass hero wordmark — translucent bold letters with a bright
+   edge and a soft frosted panel behind, so it reads like etched glass
+   floating over the scene. */
+.hero-glass {
+  color: rgba(255, 255, 255, 0.14);
+  font-weight: 800;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35), 0 2px 10px rgba(255, 255, 255, 0.12),
+    0 6px 26px rgba(8, 16, 28, 0.3);
+}
 /* Film grain — very subtle, sits above everything, ignores pointer */
 .grain-overlay {
   position: fixed;
@@ -121,6 +142,19 @@ html { scroll-behavior: smooth; }
   background: rgba(16, 43, 66, 0.5);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(174, 188, 197, 0.14);
+}
+
+/* Machine blueprint reveal (Chapters) — outline draws in, callouts fade in */
+.bp-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.9s cubic-bezier(.22, 1, .36, 1);
+}
+.group:hover .bp-draw { stroke-dashoffset: 0; }
+.bp-call { opacity: 0; transition: opacity 0.45s ease; }
+.group:hover .bp-call { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .bp-draw { transition: none; }
 }
 
 /* Sheen sweep on hover (used on cards / buttons) */
@@ -164,7 +198,7 @@ html { scroll-behavior: smooth; }
 }
 
 /* Generous side margins */
-.container-x { padding-left: 22px; padding-right: 22px; }
-@media (min-width: 640px)  { .container-x { padding-left: 88px;  padding-right: 88px;  } }
+.container-x { padding-left: 34px; padding-right: 34px; }
+@media (min-width: 640px)  { .container-x { padding-left: 96px;  padding-right: 96px;  } }
 @media (min-width: 1024px) { .container-x { padding-left: 160px; padding-right: 160px; } }
 @media (min-width: 1440px) { .container-x { padding-left: 220px; padding-right: 220px; } }

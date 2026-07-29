@@ -33,18 +33,13 @@ export default function Navbar() {
             : "bg-transparent"
         }`}
       >
-        <nav className="mx-auto flex max-w-[1280px] items-center justify-between container-x py-4">
-          <Logo light={!scrolled} />
+        <nav className="mx-auto flex max-w-[1240px] items-center justify-between container-x py-4">
+          <Logo />
 
           <ul className="hidden items-center gap-8 lg:flex">
             {links.map((l) => (
               <li key={l.label}>
-                <a
-                  href={l.href}
-                  className={`hover-line text-xs transition-colors ${
-                    scrolled ? "text-ink-900/85" : "text-ink-100/85"
-                  }`}
-                >
+                <a href={l.href} className="hover-line text-xs text-ink-900/85">
                   {l.label}
                 </a>
               </li>
@@ -54,22 +49,14 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <a
               href="#contact"
-              className={`hidden md:inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11px] uppercase tracking-widest2 backdrop-blur transition-colors ${
-                scrolled
-                  ? "border-ink-900/25 bg-ink-50/60 text-ink-900 hover:bg-ink-900 hover:text-ink-100"
-                  : "border-ink-100/30 bg-ink-100/5 text-ink-100 hover:bg-ink-100 hover:text-ink-900"
-              }`}
+              className="hidden md:inline-flex items-center gap-2 rounded-full border border-ink-900/25 bg-ink-50/60 px-4 py-2 text-[11px] uppercase tracking-widest2 text-ink-900 backdrop-blur transition-colors hover:bg-ink-900 hover:text-ink-100"
             >
               تماس
               <ArrowUpLeft className="h-3 w-3" />
             </a>
             <button
               onClick={() => setOpen(true)}
-              className={`grid h-10 w-10 place-items-center rounded-full border backdrop-blur lg:hidden transition-colors ${
-                scrolled
-                  ? "border-ink-900/20 bg-ink-50/40 text-ink-900"
-                  : "border-ink-100/25 bg-ink-100/5 text-ink-100"
-              }`}
+              className="grid h-10 w-10 place-items-center rounded-full border border-ink-900/20 bg-ink-50/40 text-ink-900 backdrop-blur lg:hidden"
               aria-label="menu"
             >
               <Menu className="h-4 w-4" />

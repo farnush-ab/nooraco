@@ -1,7 +1,7 @@
 "use client";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpLeft } from "lucide-react";
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 
 const chapters = [
   {
@@ -70,6 +70,104 @@ function ChapterArt({ kind }: { kind: string }) {
         )}
       </g>
     </svg>
+  );
+}
+
+/* On hover the card reveals a technical "map" of the machine: the outline
+   draws itself and labelled callouts point to the key parts. */
+function MachineBlueprint({ kind }: { kind: string }) {
+  const outline: Record<string, ReactNode> = {
+    straight: (
+      <>
+        <rect x="20" y="180" width="360" height="40" rx="6" pathLength={1} className="bp-draw" />
+        <path d="M40 180 V90 C40 65 60 55 90 55 H340 C360 55 370 70 370 90 V150 H220 V180 Z" pathLength={1} className="bp-draw" />
+        <rect x="345" y="80" width="30" height="80" rx="4" pathLength={1} className="bp-draw" />
+        <circle cx="70" cy="130" r="20" pathLength={1} className="bp-draw" />
+      </>
+    ),
+    overlock: (
+      <>
+        <rect x="20" y="180" width="360" height="40" rx="6" pathLength={1} className="bp-draw" />
+        <path d="M30 180 V110 C30 85 55 70 85 70 H340 C360 70 370 90 370 108 V180 Z" pathLength={1} className="bp-draw" />
+        <circle cx="70" cy="140" r="14" pathLength={1} className="bp-draw" />
+      </>
+    ),
+    cover: (
+      <>
+        <rect x="20" y="180" width="360" height="40" rx="6" pathLength={1} className="bp-draw" />
+        <path d="M40 180 V80 C40 60 55 50 80 50 H340 C360 50 370 65 370 82 V180 Z" pathLength={1} className="bp-draw" />
+        <rect x="300" y="75" width="45" height="100" rx="5" pathLength={1} className="bp-draw" />
+      </>
+    ),
+  };
+
+  const callSets: Record<string, { x: number; y: number; tx: number; ty: number; t: string }[]> = {
+    straight: [
+      { x: 110, y: 78, tx: 150, ty: 44, t: "نخ‌گیر" },
+      { x: 360, y: 150, tx: 330, ty: 70, t: "سوزن" },
+      { x: 360, y: 176, tx: 352, ty: 236, t: "پایه" },
+      { x: 150, y: 196, tx: 120, ty: 150, t: "ماسوره" },
+      { x: 70, y: 130, tx: 52, ty: 236, t: "چرخ‌دستی" },
+    ],
+    overlock: [
+      { x: 120, y: 84, tx: 150, ty: 44, t: "نخ‌گیرها" },
+      { x: 355, y: 150, tx: 330, ty: 70, t: "سوزن‌ها" },
+      { x: 340, y: 176, tx: 350, ty: 236, t: "چاقو" },
+      { x: 150, y: 196, tx: 120, ty: 150, t: "ماسوره" },
+      { x: 70, y: 140, tx: 52, ty: 236, t: "لوپر" },
+    ],
+    cover: [
+      { x: 120, y: 70, tx: 150, ty: 42, t: "نخ‌گیر" },
+      { x: 330, y: 150, tx: 330, ty: 70, t: "سوزن‌ها" },
+      { x: 325, y: 176, tx: 350, ty: 236, t: "پایه" },
+      { x: 150, y: 196, tx: 120, ty: 150, t: "ماسوره" },
+      { x: 60, y: 150, tx: 48, ty: 236, t: "چرخ‌دستی" },
+    ],
+  };
+
+  const calls = callSets[kind] || callSets.straight;
+
+  return (
+    <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+      <svg viewBox="0 0 400 260" className="h-full w-auto" style={{ color: "currentColor" }}>
+        {/* blueprint grid */}
+        <defs>
+          <pattern id={`bp-grid-${kind}`} width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M20 0 L0 0 0 20" fill="none" stroke="currentColor" strokeWidth="0.4" opacity="0.18" />
+          </pattern>
+        </defs>
+        <rect x="0" y="0" width="400" height="260" fill={`url(#bp-grid-${kind})`} />
+
+        {/* machine outline (draws in) */}
+        <g fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          {outline[kind]}
+        </g>
+
+        {/* callouts */}
+        {calls.map((c, i) => (
+          <g
+            key={i}
+            className="bp-call"
+            style={{ transitionDelay: `${350 + i * 110}ms` }}
+          >
+            <line x1={c.x} y1={c.y} x2={c.tx} y2={c.ty} stroke="currentColor" strokeWidth="0.9" opacity="0.7" />
+            <circle cx={c.x} cy={c.y} r="3.5" fill="currentColor" />
+            <circle cx={c.x} cy={c.y} r="7" fill="none" stroke="currentColor" strokeWidth="0.9" opacity="0.5" />
+            <text
+              x={c.tx}
+              y={c.ty}
+              textAnchor="middle"
+              dominantBaseline={c.ty < 130 ? "auto" : "hanging"}
+              fontSize="12"
+              fill="currentColor"
+              style={{ fontFamily: "var(--font-fa)" }}
+            >
+              {c.t}
+            </text>
+          </g>
+        ))}
+      </svg>
+    </div>
   );
 }
 
@@ -184,13 +282,10 @@ function ChapterCard({
                 }}
               />
             </div>
-            <motion.div
-              whileHover={{ scale: 1.05, rotate: -2 }}
-              transition={{ type: "spring", damping: 14 }}
-              className="relative h-full"
-            >
+            <div className="relative h-full transition-opacity duration-500 group-hover:opacity-10">
               <ChapterArt kind={chapter.illus} />
-            </motion.div>
+            </div>
+            <MachineBlueprint kind={chapter.illus} />
           </motion.div>
 
           {/* corner big index */}

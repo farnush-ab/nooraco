@@ -3,7 +3,7 @@ import Logo from "./Logo";
 import { Instagram, MessageCircle, Send } from "lucide-react";
 
 const cols = [
-  { title: "مجموعه", items: ["سوزن و قیچی", "ماسوره و قرقره", "موتور و کلاچ", "چرخ‌دنده", "بردهای الکترونیک"] },
+  { title: "مجموعه", items: ["قیچی", "سوزن", "فولدر و پایه", "ماشین‌آلات دوخت و برش", "قطعات یدکی خیاطی"] },
   { title: "برندها", items: ["PIN", "STRONG H", "ORGAN", "GROZ-BECKERT", "JUKI"] },
   { title: "نوراکو", items: ["درباره ما", "مجله", "همکاری", "نمایندگی‌ها", "تماس"] },
 ];
@@ -101,22 +101,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* massive wordmark */}
-        <div className="mt-16 select-none overflow-hidden">
-          <div
-            className="text-center leading-[0.85] tracking-tight text-ink-100/8"
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontStyle: "italic",
-              fontWeight: 400,
-              fontSize: "clamp(72px, 12vw, 200px)",
-            }}
-          >
-            nooraco
-          </div>
-        </div>
-
-        <div className="mt-8 flex flex-col items-center justify-between gap-3 border-t border-ink-100/12 pt-6 text-[10px] uppercase tracking-widest2 text-ink-100/55 md:flex-row">
+        <div className="mt-16 flex flex-col items-center justify-between gap-3 border-t border-ink-100/12 pt-6 text-[10px] uppercase tracking-widest2 text-ink-100/55 md:flex-row">
           <div>© {new Date().getFullYear()} Nooraco Studio™ · Tehran, IR</div>
           <div className="flex gap-6">
             <a href="#" className="hover-line">حریم خصوصی</a>

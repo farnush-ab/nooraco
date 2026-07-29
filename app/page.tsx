@@ -6,7 +6,6 @@ import Bento from "@/components/Bento";
 import Chapters from "@/components/Chapters";
 import Products from "@/components/Products";
 import Brands from "@/components/Brands";
-import Craft from "@/components/Craft";
 import Stats from "@/components/Stats";
 import Journal from "@/components/Journal";
 import Faq from "@/components/Faq";
@@ -26,7 +25,6 @@ export default function Home() {
       <Chapters />
       <Products />
       <Brands />
-      <Craft />
       <Stats />
       <Journal />
       <Faq />

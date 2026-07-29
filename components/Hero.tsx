@@ -1,12 +1,17 @@
 "use client";
 
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { ArrowUpLeft } from "lucide-react";
-import { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Magnetic from "./ui/Magnetic";
 
-// WebGL scene is client-only and lazy — never blocks first paint or SSR.
 const HeroScene = dynamic(() => import("./three/HeroScene"), {
   ssr: false,
   loading: () => null,
@@ -19,152 +24,191 @@ export default function Hero() {
     target: ref,
     offset: ["start start", "end start"],
   });
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, -70]);
-  const fade = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
-  const sceneScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const fade = useTransform(scrollYProgress, [0, 0.9], [1, 0]);
+
+  // Prefer the /hero.mp4 clip; fall back to the still photo, then the 3D scene.
+  const [useVideo, setUseVideo] = useState(true);
+  const [useImage, setUseImage] = useState(true);
+  // On mobile we fit the whole photo (contain) so the scissors and tape
+  // stay visible; the ken-burns zoom is desktop-only so it doesn't crop them.
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const on = () => setCompact(window.innerWidth < 1024);
+    on();
+    window.addEventListener("resize", on);
+    return () => window.removeEventListener("resize", on);
+  }, []);
+
+  // gentle pointer parallax for the photo
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const sx = useSpring(px, { stiffness: 90, damping: 20 });
+  const sy = useSpring(py, { stiffness: 90, damping: 20 });
 
   return (
     <section
       ref={ref}
-      className="relative isolate flex min-h-[100svh] flex-col justify-between overflow-hidden bg-ink-950 pt-28 pb-8 text-ink-100 sm:pt-32 sm:pb-12"
+      onMouseMove={(e) => {
+        if (reduce) return;
+        const x = e.clientX / window.innerWidth - 0.5;
+        const y = e.clientY / window.innerHeight - 0.5;
+        px.set(-x * 22);
+        py.set(-y * 16);
+      }}
+      className="relative isolate flex min-h-[100svh] flex-col items-center justify-center overflow-hidden"
     >
-      {/* deep brand-navy field */}
+      {/* two-tone studio backdrop (also the base behind the 3D fallback);
+          softened on mobile so the fitted photo dissolves into it cleanly */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-20"
-        style={{
-          background:
-            "radial-gradient(120% 90% at 70% 8%, #17476b 0%, #102b42 42%, #081726 100%)",
-        }}
-      />
-      {/* ambient glows */}
-      <div className="blob left-[8%] top-[12%] -z-10 h-[420px] w-[420px] bg-ink-700/25" />
-      <div className="blob right-[-6%] bottom-[6%] -z-10 h-[520px] w-[520px] bg-ink-800/40" />
-
-      {/* 3D canvas — full bleed, sits behind the copy */}
-      <motion.div
-        aria-hidden
-        style={reduce ? undefined : { scale: sceneScale }}
-        className="pointer-events-none absolute inset-0 -z-10"
+        className={`absolute inset-0 -z-20 ${useImage && compact ? "scale-125 blur-2xl" : ""}`}
       >
-        <div className="pointer-events-auto absolute inset-0">
-          <HeroScene />
-        </div>
-      </motion.div>
+        <svg viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
+          <defs>
+            <linearGradient id="navyBg" x1="0" y1="0" x2="0.7" y2="1">
+              <stop offset="0" stopColor="#28384f" />
+              <stop offset="1" stopColor="#141f33" />
+            </linearGradient>
+            <linearGradient id="greyBg" x1="1" y1="0" x2="0.2" y2="1">
+              <stop offset="0" stopColor="#cdd1d6" />
+              <stop offset="1" stopColor="#a7abb1" />
+            </linearGradient>
+          </defs>
+          <rect width="1200" height="900" fill="url(#navyBg)" />
+          <path
+            d="M470 -20 H1220 V920 H720 C 560 730, 700 470, 520 360 C 430 302, 470 150, 470 -20 Z"
+            fill="url(#greyBg)"
+          />
+        </svg>
+      </div>
 
-      {/* legibility scrim on the reading (right, RTL) side */}
+      {/* visual layer: video (preferred), then photo, then the 3D still-life */}
+      <div aria-hidden className="absolute inset-0 z-0">
+        {useVideo ? (
+          <motion.video
+            src="/hero.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            onError={() => setUseVideo(false)}
+            style={{
+              x: reduce ? 0 : sx,
+              y: reduce ? 0 : sy,
+              ...(compact
+                ? {
+                    maskImage:
+                      "linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%)",
+                    WebkitMaskImage:
+                      "linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%)",
+                  }
+                : {}),
+            }}
+            className="h-full w-full select-none object-contain object-center lg:object-cover"
+          />
+        ) : useImage ? (
+          <motion.img
+            src="/hero.png"
+            alt=""
+            onError={() => setUseImage(false)}
+            style={{
+              x: reduce ? 0 : sx,
+              y: reduce ? 0 : sy,
+              ...(compact
+                ? {
+                    maskImage:
+                      "linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%)",
+                    WebkitMaskImage:
+                      "linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%)",
+                  }
+                : {}),
+            }}
+            initial={{ scale: compact ? 1 : 1.06 }}
+            animate={
+              reduce || compact ? { scale: 1 } : { scale: [1.08, 1.13, 1.08] }
+            }
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+            className="h-full w-full select-none object-contain object-center lg:object-cover"
+            draggable={false}
+          />
+        ) : (
+          <HeroScene />
+        )}
+      </div>
+
+      {/* top scrim for navbar legibility */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
+        className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-28"
+        style={{ background: "linear-gradient(to bottom, rgba(20,28,42,0.35), transparent)" }}
+      />
+
+      {/* centre vignette to seat the wordmark */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           background:
-            "linear-gradient(270deg, rgba(8,23,38,0.85) 0%, rgba(8,23,38,0.45) 34%, rgba(8,23,38,0) 62%)",
-        }}
-      />
-      {/* fine grid + grain */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.06]"
-        style={{
-          backgroundImage:
-            "linear-gradient(#ebebee 1px, transparent 1px), linear-gradient(90deg, #ebebee 1px, transparent 1px)",
-          backgroundSize: "44px 44px",
-          maskImage: "radial-gradient(ellipse at 60% 40%, black 0%, transparent 75%)",
+            "radial-gradient(44% 40% at 50% 46%, rgba(16,26,42,0.42) 0%, rgba(16,26,42,0.14) 46%, transparent 74%)",
         }}
       />
 
+      {/* overlay copy */}
       <motion.div
         style={{ y: reduce ? 0 : contentY, opacity: reduce ? 1 : fade }}
-        className="relative mx-auto flex w-full max-w-[1280px] flex-1 flex-col container-x"
+        className="pointer-events-none relative z-10 flex flex-col items-center px-6 text-center"
       >
-        {/* top meta strip */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
+        <motion.h1
+          initial={{ opacity: 0, y: 16, letterSpacing: "0.35em" }}
+          animate={{ opacity: 1, y: 0, letterSpacing: "0.14em" }}
+          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          className="hero-glass text-[13vw] leading-none sm:text-[11vw] lg:text-[9rem]"
+        >
+          NOORACO
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="flex items-baseline justify-between text-[10px] uppercase tracking-widest2 text-ink-100/55"
+          transition={{ duration: 0.9, delay: 0.4 }}
+          className="mt-4 text-[11px] font-medium uppercase tracking-[0.34em] text-[#eef1f4] sm:text-sm"
+          style={{ textShadow: "0 1px 8px rgba(10,20,34,0.7)" }}
         >
-          <span>Est. 1393 · Tehran</span>
-          <span className="hidden sm:inline">issue 01 · ۲۰۲۶</span>
-          <span className="serif italic normal-case text-sm text-ink-100/70">no. 001</span>
-        </motion.div>
+          لوازم و ابزار تخصصی خیاطی
+        </motion.p>
 
-        {/* headline block */}
-        <div className="mt-auto max-w-3xl pt-16 sm:pt-24">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15 }}
-            className="flex items-center gap-3"
-          >
-            <span className="block h-px w-8 bg-ink-100/40" />
-            <span className="kicker text-ink-100/60">industrial sewing parts</span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="display mt-6 text-[9.5vw] leading-[1.04] text-ink-100 sm:text-[6vw] lg:text-[4.2vw]"
-          >
-            قطعاتی که کارگاهِ شما را{" "}
-            <span className="italic-serif italic text-ink-300">زنده</span>{" "}
-            نگه می‌دارند.
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.5 }}
-            className="mt-8 max-w-md text-sm leading-8 text-ink-100/75 sm:text-base"
-          >
-            نوراکو، مرجع تخصصی قطعات چرخ‌های خیاطی صنعتی در ایران —
-            همراهِ کارگاه‌های حرفه‌ای از سال ۱۳۹۳.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.65 }}
-            className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3"
-          >
-            <Magnetic strength={0.35}>
-              <a
-                href="#bento"
-                className="group inline-flex items-center gap-3 rounded-full bg-ink-100 px-6 py-3 text-sm text-ink-900 transition-colors hover:bg-white"
-              >
-                <span>کاوش در مجموعه</span>
-                <ArrowUpLeft className="h-4 w-4 transition-transform group-hover:-rotate-45" />
-              </a>
-            </Magnetic>
-            <a
-              href="#craft"
-              className="hover-line text-[11px] uppercase tracking-widest2 text-ink-100/70"
-            >
-              داستان برند
-            </a>
-          </motion.div>
-        </div>
-
-        {/* bottom meta row */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.1, duration: 0.7 }}
-          className="mt-14 flex items-center justify-between gap-6 border-t border-ink-100/15 pt-5 text-[10px] uppercase tracking-widest2 text-ink-100/50 sm:mt-16"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, delay: 0.6 }}
+          className="pointer-events-auto mt-9"
         >
-          <span className="flex items-center gap-2">
-            <span className="serif italic normal-case text-sm text-ink-100/70">scroll</span>
-            <motion.span
-              animate={{ y: [0, 3, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity }}
+          <Magnetic strength={0.3}>
+            <a
+              href="#bento"
+              className="inline-flex items-center gap-3 border border-white/60 bg-white/10 px-8 py-3.5 text-[11px] uppercase tracking-[0.3em] text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-ink-900"
+              style={{ textShadow: "0 1px 4px rgba(10,20,34,0.5)" }}
             >
-              ↓
-            </motion.span>
-          </span>
-          <span className="hidden sm:inline">۶۰۰۰+ کد کالا · ۳۲ استان تحت پوشش</span>
-          <span>Nooraco Studio™</span>
+              مشاهده مجموعه
+            </a>
+          </Magnetic>
         </motion.div>
+      </motion.div>
+
+      {/* scroll cue */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.1, duration: 0.6 }}
+        className="pointer-events-none absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2 text-[10px] uppercase tracking-widest2 text-white/75"
+        style={{ textShadow: "0 1px 4px rgba(10,20,34,0.6)" }}
+      >
+        <span className="serif italic normal-case text-sm">scroll</span>
+        <motion.span animate={{ y: [0, 3, 0] }} transition={{ duration: 1.8, repeat: Infinity }}>
+          ↓
+        </motion.span>
       </motion.div>
     </section>
   );
