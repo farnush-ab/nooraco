@@ -27,7 +27,8 @@ export default function Hero() {
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -60]);
   const fade = useTransform(scrollYProgress, [0, 0.9], [1, 0]);
 
-  // If /hero.png isn't present yet, fall back to the 3D scene.
+  // Prefer the /hero.mp4 clip; fall back to the still photo, then the 3D scene.
+  const [useVideo, setUseVideo] = useState(true);
   const [useImage, setUseImage] = useState(true);
   // On mobile we fit the whole photo (contain) so the scissors and tape
   // stay visible; the ken-burns zoom is desktop-only so it doesn't crop them.
@@ -82,9 +83,32 @@ export default function Hero() {
         </svg>
       </div>
 
-      {/* visual layer: photo (preferred) or the 3D still-life */}
+      {/* visual layer: video (preferred), then photo, then the 3D still-life */}
       <div aria-hidden className="absolute inset-0 z-0">
-        {useImage ? (
+        {useVideo ? (
+          <motion.video
+            src="/hero.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            onError={() => setUseVideo(false)}
+            style={{
+              x: reduce ? 0 : sx,
+              y: reduce ? 0 : sy,
+              ...(compact
+                ? {
+                    maskImage:
+                      "linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%)",
+                    WebkitMaskImage:
+                      "linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%)",
+                  }
+                : {}),
+            }}
+            className="h-full w-full select-none object-contain object-center lg:object-cover"
+          />
+        ) : useImage ? (
           <motion.img
             src="/hero.png"
             alt=""
