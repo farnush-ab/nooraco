@@ -73,7 +73,7 @@ export default function Hero() {
       <div aria-hidden className="absolute inset-0 z-0">
         {useImage ? (
           <motion.img
-            src="/hero.jpg"
+            src="/hero.png"
             alt=""
             onError={() => setUseImage(false)}
             style={{ x: reduce ? 0 : sx, y: reduce ? 0 : sy }}
@@ -114,7 +114,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16, letterSpacing: "0.35em" }}
           animate={{ opacity: 1, y: 0, letterSpacing: "0.14em" }}
           transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-          className="hero-glass hero-glass-frost px-4 text-[13vw] leading-none sm:text-[11vw] lg:text-[9rem]"
+          className="hero-glass text-[13vw] leading-none sm:text-[11vw] lg:text-[9rem]"
         >
           NOORACO
         </motion.h1>
