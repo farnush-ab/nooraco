@@ -8,7 +8,7 @@ import {
   useMotionValue,
   useSpring,
 } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Magnetic from "./ui/Magnetic";
 
@@ -27,8 +27,17 @@ export default function Hero() {
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -60]);
   const fade = useTransform(scrollYProgress, [0, 0.9], [1, 0]);
 
-  // If /hero.jpg isn't present yet, fall back to the 3D scene.
+  // If /hero.png isn't present yet, fall back to the 3D scene.
   const [useImage, setUseImage] = useState(true);
+  // On mobile we fit the whole photo (contain) so the scissors and tape
+  // stay visible; the ken-burns zoom is desktop-only so it doesn't crop them.
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const on = () => setCompact(window.innerWidth < 1024);
+    on();
+    window.addEventListener("resize", on);
+    return () => window.removeEventListener("resize", on);
+  }, []);
 
   // gentle pointer parallax for the photo
   const px = useMotionValue(0);
@@ -48,8 +57,12 @@ export default function Hero() {
       }}
       className="relative isolate flex min-h-[100svh] flex-col items-center justify-center overflow-hidden"
     >
-      {/* two-tone studio backdrop (also the base behind the 3D fallback) */}
-      <div aria-hidden className="absolute inset-0 -z-20">
+      {/* two-tone studio backdrop (also the base behind the 3D fallback);
+          softened on mobile so the fitted photo dissolves into it cleanly */}
+      <div
+        aria-hidden
+        className={`absolute inset-0 -z-20 ${useImage && compact ? "scale-125 blur-2xl" : ""}`}
+      >
         <svg viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
           <defs>
             <linearGradient id="navyBg" x1="0" y1="0" x2="0.7" y2="1">
@@ -76,11 +89,24 @@ export default function Hero() {
             src="/hero.png"
             alt=""
             onError={() => setUseImage(false)}
-            style={{ x: reduce ? 0 : sx, y: reduce ? 0 : sy }}
-            initial={{ scale: 1.06 }}
-            animate={reduce ? { scale: 1.06 } : { scale: [1.08, 1.13, 1.08] }}
+            style={{
+              x: reduce ? 0 : sx,
+              y: reduce ? 0 : sy,
+              ...(compact
+                ? {
+                    maskImage:
+                      "linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%)",
+                    WebkitMaskImage:
+                      "linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%)",
+                  }
+                : {}),
+            }}
+            initial={{ scale: compact ? 1 : 1.06 }}
+            animate={
+              reduce || compact ? { scale: 1 } : { scale: [1.08, 1.13, 1.08] }
+            }
             transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-            className="h-full w-full select-none object-cover"
+            className="h-full w-full select-none object-contain object-center lg:object-cover"
             draggable={false}
           />
         ) : (
